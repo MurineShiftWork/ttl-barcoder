@@ -6,121 +6,124 @@ Demonstrates Bpod StateMachine integration with loopback testing
 on the same device (BNC1 out -> BNC1 in).
 """
 
-import time
-
-from ttl_barcoder.core import BarcodeTTL, BarcodeConfig
+from ttl_barcoder.core import BarcodeConfig, BarcodeTTL
 
 
 def main():
     print("TTL Barcoder - Bpod Loopback Example")
     print("=" * 45)
-    
+
     try:
         from pybpod import StateMachine
-        from ttl_barcoder.hardware.bpod import BpodBarcodeSender, BpodConnection, add_barcode_sma_states
+
+        from ttl_barcoder.hardware.bpod import (
+            BpodBarcodeSender,
+            BpodConnection,
+            add_barcode_sma_states,
+        )
     except ImportError as e:
         print(f"Bpod not available: {e}")
         print("Install with: pip install pybpod")
         return
-    
+
     # Configuration for demo
     config = BarcodeConfig(
-        barcode_bits=32,         # Shorter for demo
+        barcode_bits=32,  # Shorter for demo
         time_precision_ms=10.0,
-        bit_duration_ms=50.0,    # Slower for visualization
-        init_duration_ms=15.0
+        bit_duration_ms=50.0,  # Slower for visualization
+        init_duration_ms=15.0,
     )
-    
+
     print(f"Using config: {config}")
-    
+
     # Create barcode system
     barcoder = BarcodeTTL(config)
-    
+
     # Get barcode sequence
     test_barcode = 12345
     timing_sequence = barcoder.get_sequence(test_barcode)
-    
+
     print(f"\nGenerated sequence for barcode {test_barcode}:")
     print(f"  {len(timing_sequence)} segments")
     print(f"  Total duration: {config.total_duration_ms:.0f}ms")
-    
+
     # Create StateMachine
     sma = StateMachine()
-    
+
     # Initial state
     sma.add_state(
-        state_name='start',
+        state_name="start",
         state_timer=1.0,
-        state_change_conditions={'Tup': 'send_barcode'},
-        output_actions={}
+        state_change_conditions={"Tup": "send_barcode"},
+        output_actions={},
     )
-    
+
     # Method 1: Direct injection (recommended)
     print("\nMethod 1: Direct injection")
     sender = BpodBarcodeSender()
     sender.inject_states(
         sma=sma,
         timing_sequence=timing_sequence,
-        first_state_name='send_barcode',
-        last_state_name='listen_barcode',
-        output_channel='BNC1'
+        first_state_name="send_barcode",
+        last_state_name="listen_barcode",
+        output_channel="BNC1",
     )
-    
+
     # Listen for barcode return
     sma.add_state(
-        state_name='listen_barcode',
+        state_name="listen_barcode",
         state_timer=config.total_duration_ms / 1000.0 + 0.5,  # Give extra time
-        state_change_conditions={'BNC1High': 'detected', 'Tup': 'timeout'},
-        output_actions={}
+        state_change_conditions={"BNC1High": "detected", "Tup": "timeout"},
+        output_actions={},
     )
-    
+
     # Detection states
     sma.add_state(
-        state_name='detected',
+        state_name="detected",
         state_timer=0.1,
-        state_change_conditions={'Tup': 'success'},
-        output_actions={'LED': 255}  # Success indicator
+        state_change_conditions={"Tup": "success"},
+        output_actions={"LED": 255},  # Success indicator
     )
-    
+
     sma.add_state(
-        state_name='timeout',
-        state_timer=0.1, 
-        state_change_conditions={'Tup': 'exit'},
-        output_actions={}
+        state_name="timeout",
+        state_timer=0.1,
+        state_change_conditions={"Tup": "exit"},
+        output_actions={},
     )
-    
+
     sma.add_state(
-        state_name='success',
+        state_name="success",
         state_timer=2.0,
-        state_change_conditions={'Tup': 'exit'},
-        output_actions={'LED': 255}
+        state_change_conditions={"Tup": "exit"},
+        output_actions={"LED": 255},
     )
-    
+
     print(f"Created StateMachine with {len(sma.state_names)} states")
     print("State sequence:", " -> ".join(sma.state_names))
-    
-    # Method 2: Convenience function 
+
+    # Method 2: Convenience function
     print("\nMethod 2: Convenience function")
     sma2 = StateMachine()
-    sma2.add_state('start', timer=1.0, next='barcode')
-    
+    sma2.add_state("start", timer=1.0, next="barcode")
+
     add_barcode_sma_states(
         sma=sma2,
         timing_sequence=timing_sequence,
-        first_state_name='barcode', 
-        last_state_name='end',
-        output_channel='BNC1'
+        first_state_name="barcode",
+        last_state_name="end",
+        output_channel="BNC1",
     )
-    
-    sma2.add_state('end', timer=0.1, next='exit')
+
+    sma2.add_state("end", timer=0.1, next="exit")
     print(f"Method 2 StateMachine: {len(sma2.state_names)} states")
-    
+
     # Connection and execution (commented for safety)
-    print(f"\nTo run on actual Bpod device:")
-    print(f"1. Connect Bpod at /dev/ttyACM0")
-    print(f"2. Wire BNC1 output to BNC1 input (loopback)")
-    print(f"3. Uncomment execution code below")
-    
+    print("\nTo run on actual Bpod device:")
+    print("1. Connect Bpod at /dev/ttyACM0")
+    print("2. Wire BNC1 output to BNC1 input (loopback)")
+    print("3. Uncomment execution code below")
+
     """
     # Uncomment to run on actual device
     try:
@@ -134,7 +137,7 @@ def main():
     except Exception as e:
         print(f"Bpod execution failed: {e}")
     """
-    
+
     print("\nBpod loopback example completed!")
 
 
