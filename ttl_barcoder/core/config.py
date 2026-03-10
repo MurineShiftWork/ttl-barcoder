@@ -1,9 +1,3 @@
-"""
-Barcode Configuration
-
-Centralized parameter management with Pydantic v2 validation.
-"""
-
 from __future__ import annotations
 
 from enum import Enum

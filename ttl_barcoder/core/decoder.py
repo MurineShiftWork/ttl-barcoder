@@ -1,7 +1,3 @@
-"""
-Barcode Decoder - Decode timing sequences back to barcode values
-"""
-
 from typing import List, Optional, Tuple
 
 import numpy as np

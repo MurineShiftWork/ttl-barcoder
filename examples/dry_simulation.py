@@ -1,10 +1,3 @@
-#!/usr/bin/env python3
-"""
-Example: Dry simulation - No hardware required
-
-Shows core functionality and configuration options without any hardware dependencies.
-"""
-
 from ttl_barcoder.core import BarcodeConfig, BarcodeTTL, get_preset
 
 

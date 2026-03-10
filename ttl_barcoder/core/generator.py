@@ -1,7 +1,3 @@
-"""
-TTL Generator - Factory pattern for timestamp and random barcode generation
-"""
-
 from __future__ import annotations
 
 import time
@@ -10,7 +6,12 @@ from typing import Optional
 
 import numpy as np
 
-from .config import PRECISION_UNITS_PER_SECOND, BarcodeConfig, TimestampPrecision, TTLType
+from ttl_barcoder.core.config import (
+    PRECISION_UNITS_PER_SECOND,
+    BarcodeConfig,
+    TimestampPrecision,
+    TTLType,
+)
 
 
 class TTLGenerator(ABC):

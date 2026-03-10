@@ -1,7 +1,3 @@
-"""
-Timing Encoder - Convert barcode bits to timing sequences for hardware implementation
-"""
-
 from typing import List, NamedTuple, Tuple
 
 

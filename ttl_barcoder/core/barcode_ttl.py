@@ -1,17 +1,11 @@
-"""
-Main BarcodeTTL class - One-liner interface for barcode sequences
-
-Combines generator, encoder, and decoder with clean configuration interface.
-"""
-
 from __future__ import annotations
 
 from typing import Optional
 
-from .config import BarcodeConfig, TTLType
-from .decoder import BarcodeDecoder
-from .encoder import TimingEncoder
-from .generator import TimestampGenerator, TTLGenerator, create_generator
+from ttl_barcoder.core.config import BarcodeConfig, TTLType
+from ttl_barcoder.core.decoder import BarcodeDecoder
+from ttl_barcoder.core.encoder import TimingEncoder
+from ttl_barcoder.core.generator import TimestampGenerator, TTLGenerator, create_generator
 
 
 class BarcodeTTL:
@@ -25,12 +19,15 @@ class BarcodeTTL:
     def __init__(self, config: Optional[BarcodeConfig] = None) -> None:
         self.config = config or BarcodeConfig.default()
         self.generator: TTLGenerator = create_generator(self.config)
-        self.encoder = TimingEncoder(self.config.bit_duration_ms, self.config.init_duration_ms)
+        self.encoder = TimingEncoder(
+            bit_duration_ms=self.config.bit_duration_ms,
+            init_duration_ms=self.config.init_duration_ms,
+        )
         self.decoder = BarcodeDecoder(
-            self.config.barcode_bits,
-            self.config.bit_duration_ms,
-            self.config.init_duration_ms,
-            self.config.tolerance,
+            barcode_bits=self.config.barcode_bits,
+            bit_duration_ms=self.config.bit_duration_ms,
+            init_duration_ms=self.config.init_duration_ms,
+            tolerance=self.config.tolerance,
         )
 
     def get_sequence(self, barcode: Optional[int] = None) -> list[tuple[bool, float]]:
@@ -61,8 +58,8 @@ class BarcodeTTL:
         if self.config.ttl_type != TTLType.timestamp:
             raise ValueError("get_sequence_from_timestamp requires TTLType.timestamp")
         assert isinstance(self.generator, TimestampGenerator)
-        barcode = self.generator.generate(timestamp)
-        return self.get_sequence(barcode)
+        barcode = self.generator.generate(timestamp=timestamp)
+        return self.get_sequence(barcode=barcode)
 
     def get_multiple_sequences(
         self,
@@ -78,7 +75,9 @@ class BarcodeTTL:
         """
         if self.config.ttl_type == TTLType.timestamp:
             assert isinstance(self.generator, TimestampGenerator)
-            barcodes = self.generator.generate_sequence(count, interval_s, start_timestamp)
+            barcodes = self.generator.generate_sequence(
+                count=count, interval_s=interval_s, start_timestamp=start_timestamp
+            )
         else:
             barcodes = [self.generator.generate() for _ in range(count)]
         return [self.get_sequence(b) for b in barcodes]
@@ -91,7 +90,7 @@ class BarcodeTTL:
 
         Returns (timestamp, barcode_value) or None if decode fails.
         """
-        return self.decoder.decode_edges(edge_timestamps, edge_levels)
+        return self.decoder.decode_edges(edge_timestamps=edge_timestamps, edge_levels=edge_levels)
 
     def recover_timestamp(
         self, barcode_value: int, reference_time: Optional[float] = None
@@ -104,7 +103,9 @@ class BarcodeTTL:
         if self.config.ttl_type != TTLType.timestamp:
             raise ValueError("recover_timestamp requires TTLType.timestamp")
         assert isinstance(self.generator, TimestampGenerator)
-        return self.generator.recover_timestamp(barcode_value, reference_time)
+        return self.generator.recover_timestamp(
+            barcode_value=barcode_value, reference_time=reference_time
+        )
 
     @classmethod
     def default_config(cls) -> BarcodeConfig:
