@@ -1,6 +1,8 @@
 # TTL Barcoder
 
-Generate and decode binary barcodes over TTL signals to synchronize multiple data acquisition systems. Barcodes encode a timestamp or random value as a sequence of timed HIGH/LOW pulses, transmittable over any digital output.
+Generate and decode binary barcodes over TTL signals to synchronize multiple data acquisition systems. 
+Barcodes encode a timestamp or random value as a sequence of timed HIGH/LOW pulses, transmittable over any digital output.
+
 
 ## Quick Start
 
@@ -34,6 +36,7 @@ from ttl_barcoder.hardware.pigpio import send_barcode_sequence
 send_barcode_sequence(barcoder.get_sequence(), pin=18)
 ```
 
+
 ## Installation
 
 ```bash
@@ -41,6 +44,7 @@ pip install ttl-barcoder          # core only
 pip install ttl-barcoder[bpod]    # + Bpod
 pip install ttl-barcoder[pigpio]  # + Raspberry Pi GPIO
 ```
+
 
 ## Configuration
 
@@ -66,12 +70,13 @@ from ttl_barcoder.core import get_preset
 config = get_preset("conservative")
 ```
 
-| Preset           | Bits | Precision | Duration | Coverage |
-|------------------|------|-----------|----------|----------|
-| `default`        | 37   | ms        | 1355 ms  | 4.4 yr   |
-| `high_speed`     | 32   | ms        | 848 ms   | 49 days  |
-| `conservative`   | 37   | ms        | 1940 ms  | 4.4 yr   |
-| `high_precision` | 42   | us        | 2190 ms  | 51 days  |
+| Preset           | Bits | Precision | Bit duration | TX duration | Coverage |
+|------------------|------|-----------|--------------|-------------|----------|
+| `default`        | 37   | ms        | 35 ms        | 1355 ms     | 4.4 yr   |
+| `high_speed`     | 32   | ms        | 25 ms        | 848 ms      | 49 days  |
+| `conservative`   | 37   | ms        | 50 ms        | 1940 ms     | 4.4 yr   |
+| `high_precision` | 42   | us        | 50 ms        | 2190 ms     | 51 days  |
+
 
 ## Architecture
 
@@ -88,7 +93,10 @@ ttl_barcoder/
     └── pigpio/          # Raspberry Pi GPIO via pigpio
 ```
 
-The generator is selected via a factory (`create_generator(config)`) based on `TTLType`. `TimestampGenerator` quantizes Unix time at the configured precision; `RandomGenerator` draws from a numpy RNG. Both share the same `encode_bits` / `max_value` interface on the `TTLGenerator` base class.
+- The generator is selected via a factory (`create_generator(config)`) based on `TTLType`. 
+- `TimestampGenerator` quantizes Unix time at the configured precision
+- `RandomGenerator` draws from a numpy RNG. Both share the same `encode_bits` / `max_value` interface on the `TTLGenerator` base class.
+
 
 ## Examples
 
@@ -96,12 +104,14 @@ The generator is selected via a factory (`create_generator(config)`) based on `T
 - `examples/bpod_loopback.py` — Bpod StateMachine with loopback test
 - `examples/pigpio_send.py` — Raspberry Pi GPIO transmission
 
+
 ## Contributing
 
 1. Fork and create a feature branch
 2. Add tests for new functionality
 3. Run `pytest`
 4. Submit a pull request
+
 
 ## Acknowledgments
 
