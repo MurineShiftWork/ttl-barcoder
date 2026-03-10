@@ -29,7 +29,6 @@ def main():
     # Configuration for demo
     config = BarcodeConfig(
         barcode_bits=32,  # Shorter for demo
-        time_precision_ms=10.0,
         bit_duration_ms=50.0,  # Slower for visualization
         init_duration_ms=15.0,
     )

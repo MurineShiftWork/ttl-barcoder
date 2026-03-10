@@ -25,9 +25,7 @@ def main():
         return
 
     # Configuration
-    config = BarcodeConfig(
-        barcode_bits=37, time_precision_ms=10.0, bit_duration_ms=35.0, init_duration_ms=10.0
-    )
+    config = BarcodeConfig(barcode_bits=37, bit_duration_ms=35.0, init_duration_ms=10.0)
 
     print(f"Using config: {config}")
 
