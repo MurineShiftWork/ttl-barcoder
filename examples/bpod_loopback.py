@@ -15,12 +15,9 @@ def main():
 
     try:
         from pybpod import StateMachine
+        from pybpod.bpod.bpod_base import BpodBase
 
-        from ttl_barcoder.hardware.bpod import (
-            BpodBarcodeSender,
-            BpodConnection,
-            add_barcode_sma_states,
-        )
+        from ttl_barcoder.hardware.bpod import BpodBarcodeSender, add_barcode_sma_states
     except ImportError as e:
         print(f"Bpod not available: {e}")
         print("Install with: pip install pybpod")
@@ -125,14 +122,25 @@ def main():
 
     """
     # Uncomment to run on actual device
+    class BpodConnection:
+        def __init__(self, device_path):
+            self.bpod = BpodBase(device_path)
+
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *_):
+            self.bpod.close()
+
+        def run(self, sma):
+            self.bpod.send_state_machine(sma)
+            self.bpod.run_state_machine(sma)
+
     try:
         with BpodConnection("/dev/ttyACM0") as bpod:
             print("Connected to Bpod, running state machine...")
-            success = bpod.send_state_machine(sma)
-            if success:
-                print("StateMachine completed successfully!")
-            else:
-                print("StateMachine failed")
+            bpod.run(sma)
+            print("StateMachine completed successfully!")
     except Exception as e:
         print(f"Bpod execution failed: {e}")
     """

@@ -1,9 +1,3 @@
-"""
-Pigpio implementation with clean prepare/send separation
-
-Separates pulse generation from GPIO transmission for flexibility.
-"""
-
 import time
 from typing import Any, List, Tuple
 

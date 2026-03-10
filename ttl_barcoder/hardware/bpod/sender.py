@@ -1,19 +1,11 @@
-"""
-Bpod StateMachine implementation with clean prepare/send separation
-
-Separates barcode state generation from device communication for flexibility.
-"""
-
 from typing import Any, Dict, List, Tuple
 
 try:
     from pybpod import StateMachine
-    from pybpod.bpod.bpod_base import BpodBase
 
     BPOD_AVAILABLE = True
 except ImportError:
     StateMachine = None
-    BpodBase = None
     BPOD_AVAILABLE = False
 
 
@@ -114,87 +106,6 @@ class BpodBarcodeSender:
         return sma
 
 
-class BpodConnection:
-    """
-    Handles Bpod device connection and StateMachine execution.
-
-    Separated from state preparation for clean testing and reuse.
-    """
-
-    def __init__(self, device_path: str = "/dev/ttyACM0"):
-        """
-        Initialize Bpod connection.
-
-        Args:
-            device_path: Path to Bpod device
-        """
-        if not BPOD_AVAILABLE:
-            raise ImportError("Bpod not available. Install with: pip install pybpod")
-
-        self.device_path = device_path
-        self.bpod = None
-        self.connected = False
-
-    def connect(self) -> bool:
-        """
-        Connect to Bpod device.
-
-        Returns:
-            True if connection successful
-        """
-        try:
-            self.bpod = BpodBase(self.device_path)
-            self.connected = True
-            return True
-        except Exception as e:
-            print(f"Failed to connect to Bpod at {self.device_path}: {e}")
-            self.connected = False
-            return False
-
-    def send_state_machine(self, sma: StateMachine) -> bool:
-        """
-        Send StateMachine to Bpod and run it.
-
-        Args:
-            sma: Complete StateMachine with barcode states
-
-        Returns:
-            True if successful
-        """
-        if not self.connected:
-            if not self.connect():
-                return False
-
-        try:
-            # Send and run state machine
-            self.bpod.send_state_machine(sma)
-            self.bpod.run_state_machine(sma)
-            return True
-        except Exception as e:
-            print(f"Failed to run StateMachine: {e}")
-            return False
-
-    def disconnect(self):
-        """Disconnect from Bpod device."""
-        if self.bpod is not None:
-            try:
-                self.bpod.close()
-            except:
-                pass
-            self.bpod = None
-            self.connected = False
-
-    def __enter__(self):
-        """Context manager entry."""
-        self.connect()
-        return self
-
-    def __exit__(self, exc_type, exc_val, exc_tb):
-        """Context manager exit."""
-        self.disconnect()
-
-
-# Convenience function for backward compatibility
 def add_barcode_sma_states(
     sma: StateMachine,
     timing_sequence: List[Tuple[bool, float]],
