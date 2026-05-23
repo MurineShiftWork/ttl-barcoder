@@ -2,7 +2,6 @@ from __future__ import annotations
 
 import time
 from abc import ABC, abstractmethod
-from typing import Optional
 
 import numpy as np
 
@@ -21,7 +20,7 @@ class TTLGenerator(ABC):
         self.barcode_bits = barcode_bits
 
     @abstractmethod
-    def generate(self) -> int:
+    def generate(self, timestamp: float | None = None) -> int:
         """Generate a barcode value."""
 
     def encode_bits(self, value: int) -> list[bool]:
@@ -47,7 +46,7 @@ class TimestampGenerator(TTLGenerator):
         self.precision = precision
         self._units_per_second: float = PRECISION_UNITS_PER_SECOND[precision]
 
-    def generate(self, timestamp: Optional[float] = None) -> int:
+    def generate(self, timestamp: float | None = None) -> int:
         """Generate barcode from timestamp (defaults to current time)."""
         if timestamp is None:
             timestamp = time.time()
@@ -58,16 +57,14 @@ class TimestampGenerator(TTLGenerator):
         self,
         count: int = 1,
         interval_s: float = 5.0,
-        start_timestamp: Optional[float] = None,
+        start_timestamp: float | None = None,
     ) -> list[int]:
         """Generate a sequence of barcodes at fixed time intervals."""
         if start_timestamp is None:
             start_timestamp = time.time()
         return [self.generate(start_timestamp + i * interval_s) for i in range(count)]
 
-    def recover_timestamp(
-        self, barcode_value: int, reference_time: Optional[float] = None
-    ) -> float:
+    def recover_timestamp(self, barcode_value: int, reference_time: float | None = None) -> float:
         """Recover timestamp from barcode value, resolving wraparound."""
         if reference_time is None:
             reference_time = time.time()
@@ -107,7 +104,7 @@ class RandomGenerator(TTLGenerator):
         super().__init__(barcode_bits)
         self._rng = np.random.default_rng()
 
-    def generate(self) -> int:
+    def generate(self, timestamp: float | None = None) -> int:
         """Generate a random barcode value."""
         return int(self._rng.integers(0, 2**self.barcode_bits))
 

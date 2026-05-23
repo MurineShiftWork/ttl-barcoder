@@ -1,5 +1,5 @@
 import time
-from typing import Any, List, Tuple
+from typing import Any
 
 try:
     import pigpio
@@ -30,7 +30,7 @@ class PigpioBarcodeSender:
 
         self.pin = pin
 
-    def prepare_pulses(self, timing_sequence: List[Tuple[bool, float]]) -> List[Any]:
+    def prepare_pulses(self, timing_sequence: list[tuple[bool, float]]) -> list[Any]:
         """
         Prepare pigpio pulse sequence from timing data.
 
@@ -53,7 +53,7 @@ class PigpioBarcodeSender:
 
         return pulses
 
-    def prepare_wave(self, timing_sequence: List[Tuple[bool, float]]) -> int:
+    def prepare_wave(self, timing_sequence: list[tuple[bool, float]]) -> int:
         """
         Prepare pigpio wave from timing sequence.
 
@@ -89,7 +89,7 @@ class PigpioConnection:
         self.pin = pin
         self.host = host
         self.port = port
-        self.pi = None
+        self.pi: Any = None
         self.connected = False
         self.sender = PigpioBarcodeSender(pin)
 
@@ -117,7 +117,7 @@ class PigpioConnection:
             self.connected = False
             return False
 
-    def send_sequence(self, timing_sequence: List[Tuple[bool, float]]) -> bool:
+    def send_sequence(self, timing_sequence: list[tuple[bool, float]]) -> bool:
         """
         Send timing sequence via GPIO.
 
@@ -127,9 +127,8 @@ class PigpioConnection:
         Returns:
             True if successful
         """
-        if not self.connected:
-            if not self.connect():
-                return False
+        if not self.connected and not self.connect():
+            return False
 
         try:
             # Clear any existing waves
@@ -169,7 +168,7 @@ class PigpioConnection:
                 self.pi.wave_tx_stop()
                 self.pi.wave_clear()
                 self.pi.stop()
-            except:
+            except Exception:
                 pass
             self.pi = None
             self.connected = False
@@ -185,7 +184,7 @@ class PigpioConnection:
 
 
 # Convenience function for simple usage
-def send_barcode_sequence(timing_sequence: List[Tuple[bool, float]], pin: int = 18) -> bool:
+def send_barcode_sequence(timing_sequence: list[tuple[bool, float]], pin: int = 18) -> bool:
     """
     Convenience function to send barcode sequence via GPIO.
 

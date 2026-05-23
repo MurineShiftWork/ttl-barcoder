@@ -1,11 +1,13 @@
 from __future__ import annotations
 
-from typing import Optional
-
 from ttl_barcoder.core.config import BarcodeConfig, TTLType
 from ttl_barcoder.core.decoder import BarcodeDecoder
 from ttl_barcoder.core.encoder import TimingEncoder
-from ttl_barcoder.core.generator import TimestampGenerator, TTLGenerator, create_generator
+from ttl_barcoder.core.generator import (
+    TimestampGenerator,
+    TTLGenerator,
+    create_generator,
+)
 
 
 class BarcodeTTL:
@@ -16,7 +18,7 @@ class BarcodeTTL:
     ready for hardware transmission.
     """
 
-    def __init__(self, config: Optional[BarcodeConfig] = None) -> None:
+    def __init__(self, config: BarcodeConfig | None = None) -> None:
         self.config = config or BarcodeConfig.default()
         self.generator: TTLGenerator = create_generator(self.config)
         self.encoder = TimingEncoder(
@@ -30,7 +32,22 @@ class BarcodeTTL:
             tolerance=self.config.tolerance,
         )
 
-    def get_sequence(self, barcode: Optional[int] = None) -> list[tuple[bool, float]]:
+    def prepare(self) -> tuple[int, float, list[tuple[bool, float]]]:
+        """Capture wall time, generate barcode, return timing sequence.
+
+        Wall time is captured before generate() so it is consistent with
+        the timestamp encoded in the barcode (for TTLType.timestamp configs).
+
+        Returns (barcode_value, wall_time, timing_sequence).
+        """
+        import time
+
+        wall_time = time.time()
+        barcode_value = self.generator.generate(timestamp=wall_time)
+        timing_sequence = self.get_sequence(barcode=barcode_value)
+        return barcode_value, wall_time, timing_sequence
+
+    def get_sequence(self, barcode: int | None = None) -> list[tuple[bool, float]]:
         """
         One-liner: get timing sequence ready for hardware transmission.
 
@@ -65,13 +82,14 @@ class BarcodeTTL:
         self,
         count: int = 1,
         interval_s: float = 5.0,
-        start_timestamp: Optional[float] = None,
+        start_timestamp: float | None = None,
     ) -> list[list[tuple[bool, float]]]:
         """
         Generate multiple barcode sequences.
 
         For timestamp TTL: sequences are spaced by interval_s.
-        For random TTL: generates count independent random sequences (interval_s ignored).
+        For random TTL: generates count independent random sequences (interval_s
+        ignored).
         """
         if self.config.ttl_type == TTLType.timestamp:
             assert isinstance(self.generator, TimestampGenerator)
@@ -84,7 +102,7 @@ class BarcodeTTL:
 
     def decode_edges(
         self, edge_timestamps: list[float], edge_levels: list[bool]
-    ) -> Optional[tuple[float, int]]:
+    ) -> tuple[float, int] | None:
         """
         Decode barcode from edge timestamps.
 
@@ -92,9 +110,7 @@ class BarcodeTTL:
         """
         return self.decoder.decode_edges(edge_timestamps=edge_timestamps, edge_levels=edge_levels)
 
-    def recover_timestamp(
-        self, barcode_value: int, reference_time: Optional[float] = None
-    ) -> float:
+    def recover_timestamp(self, barcode_value: int, reference_time: float | None = None) -> float:
         """
         Recover original timestamp from barcode value (timestamp TTL only).
 

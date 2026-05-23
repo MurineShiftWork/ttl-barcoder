@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from enum import Enum
-from typing import Any, Optional
+from typing import Any
 
 from pydantic import BaseModel, ConfigDict, Field
 
@@ -63,7 +63,7 @@ class BarcodeConfig(BaseModel):
         return cls(**config_dict)
 
     @property
-    def coverage_years(self) -> Optional[float]:
+    def coverage_years(self) -> float | None:
         """Coverage in years (timestamp TTL only)."""
         if self.ttl_type != TTLType.timestamp:
             return None
@@ -95,7 +95,10 @@ class BarcodeConfig(BaseModel):
             parts.append(f"{self.timestamp_precision.value} precision")
             if self.coverage_years is not None:
                 parts.append(f"{self.coverage_years:.1f}yr coverage")
-        parts += [f"{self.bit_duration_ms}ms bits", f"{self.total_duration_ms:.0f}ms total"]
+        parts += [
+            f"{self.bit_duration_ms}ms bits",
+            f"{self.total_duration_ms:.0f}ms total",
+        ]
         return f"BarcodeConfig({', '.join(parts)})"
 
 

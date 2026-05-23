@@ -1,4 +1,4 @@
-from typing import List, NamedTuple, Tuple
+from typing import NamedTuple
 
 
 class TimingSegment(NamedTuple):
@@ -25,7 +25,7 @@ class TimingEncoder:
         # Calculate total timing
         self.init_sequence_ms = 3 * init_duration_ms  # LOW-HIGH-LOW
 
-    def encode_timing_sequence(self, bits: List[bool]) -> List[TimingSegment]:
+    def encode_timing_sequence(self, bits: list[bool]) -> list[TimingSegment]:
         """
         Convert bit array to complete timing sequence with init wrappers.
 
@@ -37,10 +37,15 @@ class TimingEncoder:
         """
         sequence = []
 
-        # Start initialization: LOW-HIGH-LOW
-        sequence.append(TimingSegment(False, self.init_duration_ms))
+        # Start initialization: HIGH-LOW-HIGH
+        # Must start HIGH (not LOW) so the first edge always fires even when
+        # the BNC output is at LOW idle between trials. Starting LOW would
+        # suppress the first edge, leaving only 1 init gap visible to the
+        # decoder and causing init validation to fail for ~50% of barcodes
+        # (those where bit[0]=0, which produce no edge at t=30ms).
         sequence.append(TimingSegment(True, self.init_duration_ms))
         sequence.append(TimingSegment(False, self.init_duration_ms))
+        sequence.append(TimingSegment(True, self.init_duration_ms))
 
         # Data bits
         for bit in bits:
@@ -53,7 +58,7 @@ class TimingEncoder:
 
         return sequence
 
-    def encode_state_durations(self, bits: List[bool]) -> List[float]:
+    def encode_state_durations(self, bits: list[bool]) -> list[float]:
         """
         Convert bits to list of state durations (for simple hardware).
 
@@ -66,7 +71,7 @@ class TimingEncoder:
         sequence = self.encode_timing_sequence(bits)
         return [seg.duration_ms for seg in sequence]
 
-    def encode_level_durations(self, bits: List[bool]) -> List[Tuple[bool, float]]:
+    def encode_level_durations(self, bits: list[bool]) -> list[tuple[bool, float]]:
         """
         Convert bits to (level, duration) pairs.
 

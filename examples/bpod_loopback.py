@@ -15,9 +15,8 @@ def main():
 
     try:
         from pybpod import StateMachine
-        from pybpod.bpod.bpod_base import BpodBase
 
-        from ttl_barcoder.hardware.bpod import BpodBarcodeSender, add_barcode_sma_states
+        from ttl_barcoder.hardware.bpod import BpodBarcodeSender, inject_barcode_states
     except ImportError as e:
         print(f"Bpod not available: {e}")
         print("Install with: pip install pybpod")
@@ -60,9 +59,9 @@ def main():
     sender.inject_states(
         sma=sma,
         timing_sequence=timing_sequence,
+        bnc_channel="BNC1",
         first_state_name="send_barcode",
         last_state_name="listen_barcode",
-        output_channel="BNC1",
     )
 
     # Listen for barcode return
@@ -103,12 +102,12 @@ def main():
     sma2 = StateMachine()
     sma2.add_state("start", timer=1.0, next="barcode")
 
-    add_barcode_sma_states(
+    inject_barcode_states(
         sma=sma2,
         timing_sequence=timing_sequence,
+        bnc_channel="BNC1",
         first_state_name="barcode",
         last_state_name="end",
-        output_channel="BNC1",
     )
 
     sma2.add_state("end", timer=0.1, next="exit")

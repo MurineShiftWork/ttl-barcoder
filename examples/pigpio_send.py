@@ -13,11 +13,7 @@ def main():
     print("=" * 45)
 
     try:
-        from ttl_barcoder.hardware.pigpio import (
-            PigpioBarcodeSender,
-            PigpioConnection,
-            send_barcode_sequence,
-        )
+        from ttl_barcoder.hardware.pigpio import PigpioBarcodeSender
     except ImportError as e:
         print(f"Pigpio not available: {e}")
         print("Install with: pip install pigpio")

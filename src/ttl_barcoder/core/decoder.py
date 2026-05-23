@@ -1,5 +1,3 @@
-from typing import List, Optional, Tuple
-
 import numpy as np
 
 
@@ -33,8 +31,8 @@ class BarcodeDecoder:
         self.max_init = init_duration_ms * (1 + tolerance)
 
     def decode_edges(
-        self, edge_timestamps: List[float], edge_levels: List[bool]
-    ) -> Optional[Tuple[float, int]]:
+        self, edge_timestamps: list[float], edge_levels: list[bool]
+    ) -> tuple[float, int] | None:
         """
         Decode barcode from edge timestamps.
 
@@ -71,21 +69,29 @@ class BarcodeDecoder:
 
         return (start_time, barcode_value)
 
-    def _validate_init_pattern(self, rel_times_ms: List[float]) -> bool:
-        """Check for valid initialization pattern."""
+    def _validate_init_pattern(self, rel_times_ms: list[float]) -> bool:
+        """Check for valid initialization pattern.
+
+        Requires at least 1 inter-edge gap in the init-duration window within
+        the first 3 gaps. When the BNC output idles at LOW and the init sequence
+        starts LOW (original encoder), the first LOW segment produces no edge,
+        leaving only 2 init edges (and 1 detectable init gap) before the data
+        bits. Requiring 1 (not 2) is therefore necessary for full decode rate.
+        The encoder fix (start init HIGH-LOW-HIGH) produces 2 detectable gaps
+        always, so this threshold is sufficient for both encoder versions.
+        """
         if len(rel_times_ms) < 4:
             return False
 
         time_diffs = np.diff(rel_times_ms)
 
-        # Look for initialization pulses in expected range
         init_candidates = sum(
             1 for diff in time_diffs[:3] if self.min_init <= diff <= self.max_init
         )
 
-        return init_candidates >= 2
+        return init_candidates >= 1
 
-    def _decode_bits(self, data_times: List[float], data_levels: List[bool]) -> List[int]:
+    def _decode_bits(self, data_times: list[float], data_levels: list[bool]) -> list[int]:
         """Decode bits by sampling at bit boundaries."""
         bits = []
         current_level = False  # Start LOW after init
