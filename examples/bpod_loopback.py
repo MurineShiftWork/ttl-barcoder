@@ -50,7 +50,7 @@ def main():
         state_name="start",
         state_timer=1.0,
         state_change_conditions={"Tup": "send_barcode"},
-        output_actions={},
+        output_actions=[],
     )
 
     # Method 1: Direct injection (recommended)
@@ -69,7 +69,7 @@ def main():
         state_name="listen_barcode",
         state_timer=config.total_duration_ms / 1000.0 + 0.5,  # Give extra time
         state_change_conditions={"BNC1High": "detected", "Tup": "timeout"},
-        output_actions={},
+        output_actions=[],
     )
 
     # Detection states
@@ -77,14 +77,14 @@ def main():
         state_name="detected",
         state_timer=0.1,
         state_change_conditions={"Tup": "success"},
-        output_actions={"LED": 255},  # Success indicator
+        output_actions=[("LED", 255)],  # Success indicator
     )
 
     sma.add_state(
         state_name="timeout",
         state_timer=0.1,
         state_change_conditions={"Tup": "exit"},
-        output_actions={},
+        output_actions=[],
     )
 
     sma.add_state(
@@ -100,7 +100,12 @@ def main():
     # Method 2: Convenience function
     print("\nMethod 2: Convenience function")
     sma2 = StateMachine()
-    sma2.add_state("start", timer=1.0, next="barcode")
+    sma2.add_state(
+        state_name="start",
+        state_timer=1.0,
+        state_change_conditions={"Tup": "barcode"},
+        output_actions=[],
+    )
 
     inject_barcode_states(
         sma=sma2,
@@ -110,7 +115,12 @@ def main():
         last_state_name="end",
     )
 
-    sma2.add_state("end", timer=0.1, next="exit")
+    sma2.add_state(
+        state_name="end",
+        state_timer=0.1,
+        state_change_conditions={"Tup": "exit"},
+        output_actions=[],
+    )
     print(f"Method 2 StateMachine: {len(sma2.state_names)} states")
 
     # Connection and execution (commented for safety)

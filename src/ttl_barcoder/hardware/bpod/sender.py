@@ -18,25 +18,13 @@ def inject_barcode_states(
     first_state_name: str = BARCODE_FIRST_STATE_NAME,
     last_state_name: str = "exit",
 ):
-    """Inject barcode states into a pybpodapi StateMachine.
-
-    Uses pybpodapi list-of-tuples output_actions format:
-        [(channel, value), ...]
-
-    Args:
-        sma: pybpodapi StateMachine to modify in-place
-        timing_sequence: list of (level: bool, duration_ms: float)
-        bnc_channel: Bpod output channel (e.g. Bpod.OutputChannels.BNC2)
-        first_state_name: name for the first barcode state (used as alignment key)
-        last_state_name: state to transition to after barcode completes
-
-    Returns:
-        Modified StateMachine
-    """
+    """Inject barcode timing states into a pybpodapi StateMachine in-place."""
     n = len(timing_sequence)
     for i, (level, duration_ms) in enumerate(timing_sequence):
         state_name = first_state_name if i == 0 else f"{first_state_name}_seg_{i}"
-        next_state = last_state_name if i == n - 1 else f"{first_state_name}_seg_{i + 1}"
+        next_state = (
+            last_state_name if i == n - 1 else f"{first_state_name}_seg_{i + 1}"
+        )
         sma.add_state(
             state_name=state_name,
             state_timer=duration_ms / 1000.0,

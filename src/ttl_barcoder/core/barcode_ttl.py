@@ -11,12 +11,7 @@ from ttl_barcoder.core.generator import (
 
 
 class BarcodeTTL:
-    """
-    Main interface for TTL barcode generation and decoding.
-
-    Provides clean one-liner methods for getting barcode sequences
-    ready for hardware transmission.
-    """
+    """Main interface for TTL barcode generation and decoding."""
 
     def __init__(self, config: BarcodeConfig | None = None) -> None:
         self.config = config or BarcodeConfig.default()
@@ -33,12 +28,9 @@ class BarcodeTTL:
         )
 
     def prepare(self) -> tuple[int, float, list[tuple[bool, float]]]:
-        """Capture wall time, generate barcode, return timing sequence.
+        """Capture wall time and return (barcode_value, wall_time, timing_sequence).
 
-        Wall time is captured before generate() so it is consistent with
-        the timestamp encoded in the barcode (for TTLType.timestamp configs).
-
-        Returns (barcode_value, wall_time, timing_sequence).
+        Wall time is captured before generate() so it matches the encoded timestamp.
         """
         import time
 
@@ -48,30 +40,14 @@ class BarcodeTTL:
         return barcode_value, wall_time, timing_sequence
 
     def get_sequence(self, barcode: int | None = None) -> list[tuple[bool, float]]:
-        """
-        One-liner: get timing sequence ready for hardware transmission.
-
-        Parameters
-        ----------
-        barcode : int, optional
-            Specific barcode value. If None, calls generator.generate() to
-            produce a fresh value (timestamp or random, per config).
-
-        Returns
-        -------
-        list of (level, duration_ms) tuples
-        """
+        """Return (level, duration_ms) timing sequence for hardware transmission."""
         if barcode is None:
             barcode = self.generator.generate()
         bits = self.generator.encode_bits(barcode)
         return self.encoder.encode_level_durations(bits)
 
     def get_sequence_from_timestamp(self, timestamp: float) -> list[tuple[bool, float]]:
-        """
-        Get timing sequence from a specific Unix timestamp.
-
-        Only valid for TTLType.timestamp configurations.
-        """
+        """Get timing sequence from a specific Unix timestamp (timestamp TTL only)."""
         if self.config.ttl_type != TTLType.timestamp:
             raise ValueError("get_sequence_from_timestamp requires TTLType.timestamp")
         assert isinstance(self.generator, TimestampGenerator)
@@ -84,13 +60,6 @@ class BarcodeTTL:
         interval_s: float = 5.0,
         start_timestamp: float | None = None,
     ) -> list[list[tuple[bool, float]]]:
-        """
-        Generate multiple barcode sequences.
-
-        For timestamp TTL: sequences are spaced by interval_s.
-        For random TTL: generates count independent random sequences (interval_s
-        ignored).
-        """
         if self.config.ttl_type == TTLType.timestamp:
             assert isinstance(self.generator, TimestampGenerator)
             barcodes = self.generator.generate_sequence(
@@ -103,19 +72,15 @@ class BarcodeTTL:
     def decode_edges(
         self, edge_timestamps: list[float], edge_levels: list[bool]
     ) -> tuple[float, int] | None:
-        """
-        Decode barcode from edge timestamps.
+        """Decode edge timestamps to (timestamp, barcode_value) or None."""
+        return self.decoder.decode_edges(
+            edge_timestamps=edge_timestamps, edge_levels=edge_levels
+        )
 
-        Returns (timestamp, barcode_value) or None if decode fails.
-        """
-        return self.decoder.decode_edges(edge_timestamps=edge_timestamps, edge_levels=edge_levels)
-
-    def recover_timestamp(self, barcode_value: int, reference_time: float | None = None) -> float:
-        """
-        Recover original timestamp from barcode value (timestamp TTL only).
-
-        Handles wraparound using reference_time.
-        """
+    def recover_timestamp(
+        self, barcode_value: int, reference_time: float | None = None
+    ) -> float:
+        """Recover original timestamp from barcode value with wraparound handling."""
         if self.config.ttl_type != TTLType.timestamp:
             raise ValueError("recover_timestamp requires TTLType.timestamp")
         assert isinstance(self.generator, TimestampGenerator)

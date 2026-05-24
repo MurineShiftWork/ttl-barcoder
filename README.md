@@ -1,6 +1,8 @@
 # TTL Barcoder
 
-Generate and decode binary barcodes over TTL signals to synchronize multiple data acquisition systems. 
+[![PyPI](https://img.shields.io/pypi/v/ttl-barcoder.svg)](https://pypi.org/project/ttl-barcoder)
+
+Generate and decode binary barcodes over TTL signals to synchronize multiple data acquisition systems.
 Barcodes encode a timestamp or random value as a sequence of timed HIGH/LOW pulses, transmittable over any digital output.
 
 
@@ -22,11 +24,11 @@ sequence = barcoder.get_sequence()
 ### Bpod
 ```python
 from ttl_barcoder.core import BarcodeTTL
-from ttl_barcoder.hardware.bpod import add_barcode_sma_states
+from ttl_barcoder.hardware.bpod import inject_barcode_states
 
 barcoder = BarcodeTTL()
 sequence = barcoder.get_sequence()
-add_barcode_sma_states(sma, sequence, first_state_name='send_sync', last_state_name='next', output_channel='BNC1')
+inject_barcode_states(sma, sequence, bnc_channel='BNC1', first_state_name='send_sync', last_state_name='next')
 ```
 
 ### Raspberry Pi GPIO
@@ -93,7 +95,7 @@ ttl_barcoder/
     └── pigpio/          # Raspberry Pi GPIO via pigpio
 ```
 
-- The generator is selected via a factory (`create_generator(config)`) based on `TTLType`. 
+- The generator is selected via a factory (`create_generator(config)`) based on `TTLType`.
 - `TimestampGenerator` quantizes Unix time at the configured precision
 - `RandomGenerator` draws from a numpy RNG. Both share the same `encode_bits` / `max_value` interface on the `TTLGenerator` base class.
 
@@ -118,3 +120,8 @@ ttl_barcoder/
 - Based on barcode synchronization from University of Colorado ONE Core
 - Inspired by Open Ephys protocols
 - Built for the neuroscience and scientific DAQ community
+
+
+## License & sources
+
+This software is released under the **[BSD 3-Clause License](LICENSE)**.

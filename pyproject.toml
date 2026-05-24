@@ -30,7 +30,7 @@ classifiers = [
     "Topic :: Scientific/Engineering :: Interface Engine/Protocol Translator",
 ]
 dependencies = [
-    "numpy>=2.0",
+    "numpy>=1.20",
     "pydantic>=2.0",
 ]
 

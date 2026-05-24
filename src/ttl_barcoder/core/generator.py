@@ -64,7 +64,9 @@ class TimestampGenerator(TTLGenerator):
             start_timestamp = time.time()
         return [self.generate(start_timestamp + i * interval_s) for i in range(count)]
 
-    def recover_timestamp(self, barcode_value: int, reference_time: float | None = None) -> float:
+    def recover_timestamp(
+        self, barcode_value: int, reference_time: float | None = None
+    ) -> float:
         """Recover timestamp from barcode value, resolving wraparound."""
         if reference_time is None:
             reference_time = time.time()
@@ -114,20 +116,7 @@ class RandomGenerator(TTLGenerator):
 
 
 def create_generator(config: BarcodeConfig) -> TTLGenerator:
-    """
-    Factory: create the appropriate TTLGenerator from a BarcodeConfig.
-
-    Parameters
-    ----------
-    config : BarcodeConfig
-        Validated configuration specifying ttl_type, barcode_bits, and
-        (for timestamp) timestamp_precision.
-
-    Returns
-    -------
-    TTLGenerator
-        TimestampGenerator or RandomGenerator instance.
-    """
+    """Create TimestampGenerator or RandomGenerator from config."""
     if config.ttl_type == TTLType.timestamp:
         return TimestampGenerator(config.barcode_bits, config.timestamp_precision)
     if config.ttl_type == TTLType.random:
