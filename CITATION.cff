@@ -1,0 +1,10 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+type: software
+title: "ttl-barcoder: TTL barcode generation for multi-system DAQ synchronization"
+repository-code: https://github.com/larsrollik/ttl-barcoder
+license: BSD-3-Clause
+authors:
+  - family-names: Rollik
+    given-names: Lars B.
+    orcid: https://orcid.org/0000-0003-0160-6971
