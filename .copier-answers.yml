@@ -4,7 +4,7 @@ _src_path: gh:larsrollik/templatepy
 author_email: l.b.rollik@protonmail.com
 author_name: Lars B. Rollik
 github_repo: ttl-barcoder
-github_username: larsrollik
+github_username: murineshiftwork
 project_description: TTL barcode generation for multi-system DAQ synchronization
 project_name: ttl-barcoder
 project_slug: ttl_barcoder
