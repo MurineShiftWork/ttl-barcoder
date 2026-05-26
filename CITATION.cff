@@ -3,7 +3,7 @@ message: "If you use this software, please cite it as below."
 type: software
 title: "ttl-barcoder: TTL barcode generation for multi-system DAQ synchronization"
 version: "0.3.0"
-repository-code: https://github.com/larsrollik/ttl-barcoder
+repository-code: https://github.com/murineshiftwork/ttl-barcoder
 license: BSD-3-Clause
 authors:
   - family-names: Rollik

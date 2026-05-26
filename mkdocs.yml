@@ -1,7 +1,7 @@
 site_name: ttl-barcoder
 site_description: TTL barcode generation for multi-system DAQ synchronization
-site_url: https://larsrollik.github.io/ttl-barcoder/
-repo_url: https://github.com/larsrollik/ttl-barcoder
+site_url: https://murineshiftwork.github.io/ttl-barcoder/
+repo_url: https://github.com/murineshiftwork/ttl-barcoder
 repo_name: ttl-barcoder
 edit_uri: edit/main/docs/
 
