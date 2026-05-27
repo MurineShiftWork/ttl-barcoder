@@ -1,8 +1,11 @@
 # TTL Barcoder
 
 [![PyPI](https://img.shields.io/pypi/v/ttl-barcoder.svg)](https://pypi.org/project/ttl-barcoder)
+[![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
 
 Generate and decode binary barcodes over TTL signals to synchronize multiple data acquisition systems.
+
+**[→ Full documentation](https://murineshiftwork.github.io/ttl-barcoder)**
 Barcodes encode a timestamp or random value as a sequence of timed HIGH/LOW pulses, transmittable over any digital output.
 
 
