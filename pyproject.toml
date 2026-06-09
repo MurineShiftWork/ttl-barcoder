@@ -6,11 +6,11 @@ build-backend = "hatchling.build"
 name = "ttl-barcoder"
 dynamic = ["version"]
 authors = [
-    { name = "Lars B. Rollik", email = "L.B.Rollik@protonmail.com" }
+    { name = "Lars B. Rollik", email = "lars@rollik.me" }
 ]
 description = "Modular barcode generation for TTL synchronization with clean hardware separation"
 readme = "README.md"
-license = {text = "BSD-3-Clause"}
+license = { file = "LICENSE" }
 requires-python = ">=3.10"
 keywords = [
     "ttl", "barcode", "synchronization", "daq",
@@ -19,7 +19,7 @@ keywords = [
 classifiers = [
     "Development Status :: 4 - Beta",
     "Intended Audience :: Science/Research",
-    "License :: OSI Approved :: BSD License",
+    "License :: Free for non-commercial use",
     "Operating System :: OS Independent",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.10",
