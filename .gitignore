@@ -30,3 +30,4 @@ env/
 .vscode/
 .DS_Store
 site/
+uv.lock
