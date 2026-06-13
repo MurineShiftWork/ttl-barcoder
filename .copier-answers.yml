@@ -12,3 +12,4 @@ project_name: ttl-barcoder
 project_slug: ttl_barcoder
 python_requires: '3.10'
 year: '2024'
+test_on_windows: false
