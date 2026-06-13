@@ -59,7 +59,7 @@ class TimestampGenerator(TTLGenerator):
         interval_s: float = 5.0,
         start_timestamp: float | None = None,
     ) -> list[int]:
-        """Generate a sequence of barcodes at fixed time intervals."""
+        """Generate count barcodes spaced interval_s seconds apart."""
         if start_timestamp is None:
             start_timestamp = time.time()
         return [self.generate(start_timestamp + i * interval_s) for i in range(count)]
@@ -67,7 +67,11 @@ class TimestampGenerator(TTLGenerator):
     def recover_timestamp(
         self, barcode_value: int, reference_time: float | None = None
     ) -> float:
-        """Recover timestamp from barcode value, resolving wraparound."""
+        """Recover Unix timestamp from a barcode value, resolving modular wraparound.
+
+        Checks the previous, current, and next bit-width windows relative to
+        reference_time and returns the candidate closest to the reference.
+        """
         if reference_time is None:
             reference_time = time.time()
         ref_units = int(reference_time * self._units_per_second)

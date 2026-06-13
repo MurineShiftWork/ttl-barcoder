@@ -45,6 +45,7 @@ class BpodBarcodeSender:
         first_state_name: str = BARCODE_FIRST_STATE_NAME,
         last_state_name: str = "exit",
     ):
+        """Inject barcode states into sma; delegates to inject_barcode_states."""
         return inject_barcode_states(
             sma, timing_sequence, bnc_channel, first_state_name, last_state_name
         )

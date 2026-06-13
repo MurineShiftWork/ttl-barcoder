@@ -17,6 +17,11 @@ class TimingEncoder:
         self.init_sequence_ms = 3 * init_duration_ms
 
     def encode_timing_sequence(self, bits: list[bool]) -> list[TimingSegment]:
+        """Encode bits into a full timing sequence including preamble and trailer.
+
+        The preamble is HIGH-LOW-HIGH so the first rising edge is always
+        detectable even when the output line idles LOW between trials.
+        """
         sequence = []
 
         # Start initialization: HIGH-LOW-HIGH
@@ -40,14 +45,17 @@ class TimingEncoder:
         return sequence
 
     def encode_state_durations(self, bits: list[bool]) -> list[float]:
+        """Return only the duration_ms values from the timing sequence (no levels)."""
         return [seg.duration_ms for seg in self.encode_timing_sequence(bits)]
 
     def encode_level_durations(self, bits: list[bool]) -> list[tuple[bool, float]]:
+        """Return (level, duration_ms) pairs suitable for hardware drivers."""
         return [
             (seg.level, seg.duration_ms) for seg in self.encode_timing_sequence(bits)
         ]
 
     def get_total_duration(self, num_bits: int) -> float:
+        """Return total transmission duration in milliseconds for a given bit count."""
         return 2 * self.init_sequence_ms + num_bits * self.bit_duration_ms
 
     @property

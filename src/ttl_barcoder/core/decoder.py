@@ -2,7 +2,11 @@ import numpy as np
 
 
 class BarcodeDecoder:
-    """Decode edge timestamps back to barcode values."""
+    """Decode edge timestamps back to barcode values.
+
+    Must be constructed with parameters that match the encoder that produced
+    the signal. Use BarcodeConfig to keep encoder and decoder in sync.
+    """
 
     def __init__(
         self,
@@ -44,7 +48,7 @@ class BarcodeDecoder:
         return (start_time, barcode_value)
 
     def _validate_init_pattern(self, rel_times_ms: list[float]) -> bool:
-        # Require ≥1 init-duration gap (not 2): BNC idle-LOW + old encoder starting LOW
+        # Require >=1 init-duration gap (not 2): BNC idle-LOW + old encoder starting LOW
         # leaves only 1 detectable gap. HIGH-LOW-HIGH encoder fix gives 2; requiring 1
         # handles both encoder versions without breaking the fixed path.
         if len(rel_times_ms) < 4:
@@ -58,6 +62,7 @@ class BarcodeDecoder:
     def _decode_bits(
         self, data_times: list[float], data_levels: list[bool]
     ) -> list[int]:
+        """Sample each bit by majority level at the mid-point of its time slot."""
         bits = []
         current_level = False
         edge_idx = 0

@@ -48,6 +48,7 @@ class PigpioConnection:
         self.sender = PigpioBarcodeSender(pin)
 
     def connect(self) -> bool:
+        """Connect to the pigpio daemon and configure the output pin."""
         try:
             self.pi = pigpio.pi(self.host, self.port)
             if not self.pi.connected:
@@ -86,6 +87,7 @@ class PigpioConnection:
             return False
 
     def disconnect(self):
+        """Stop any active wave and close the connection to the pigpio daemon."""
         if self.pi is not None:
             try:
                 self.pi.wave_tx_stop()

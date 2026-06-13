@@ -11,7 +11,11 @@ from ttl_barcoder.core.generator import (
 
 
 class BarcodeTTL:
-    """Main interface for TTL barcode generation and decoding."""
+    """Main interface for TTL barcode generation and decoding.
+
+    Constructs and owns a generator, encoder, and decoder whose parameters
+    are all derived from a single BarcodeConfig so they stay in sync.
+    """
 
     def __init__(self, config: BarcodeConfig | None = None) -> None:
         self.config = config or BarcodeConfig.default()
@@ -60,6 +64,11 @@ class BarcodeTTL:
         interval_s: float = 5.0,
         start_timestamp: float | None = None,
     ) -> list[list[tuple[bool, float]]]:
+        """Return timing sequences for multiple barcodes spaced interval_s apart.
+
+        For timestamp TTL the barcodes encode evenly spaced future times;
+        for random TTL each barcode is independently random.
+        """
         if self.config.ttl_type == TTLType.timestamp:
             assert isinstance(self.generator, TimestampGenerator)
             barcodes = self.generator.generate_sequence(
@@ -90,10 +99,12 @@ class BarcodeTTL:
 
     @classmethod
     def default_config(cls) -> BarcodeConfig:
+        """Return the default BarcodeConfig instance."""
         return BarcodeConfig.default()
 
     @property
     def info(self) -> dict:
+        """Return a summary dict covering config, generator, and encoder parameters."""
         return {
             "config": self.config.info(),
             "generator": self.generator.info,
