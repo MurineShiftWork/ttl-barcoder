@@ -286,6 +286,33 @@
   
   
     <li class="md-nav__item">
+      <a href="../usage/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Usage
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../configuration/" class="md-nav__link">
         
   
@@ -423,10 +450,43 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#ttl_barcoder.BarcodeTTL.info" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        info
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#ttl_barcoder.BarcodeTTL.decode_edges" class="md-nav__link">
     <span class="md-ellipsis">
       
         decode_edges
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ttl_barcoder.BarcodeTTL.default_config" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        default_config
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ttl_barcoder.BarcodeTTL.get_multiple_sequences" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        get_multiple_sequences
       
     </span>
   </a>
@@ -878,10 +938,43 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#ttl_barcoder.BarcodeTTL.info" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        info
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#ttl_barcoder.BarcodeTTL.decode_edges" class="md-nav__link">
     <span class="md-ellipsis">
       
         decode_edges
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ttl_barcoder.BarcodeTTL.default_config" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        default_config
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ttl_barcoder.BarcodeTTL.get_multiple_sequences" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        get_multiple_sequences
       
     </span>
   </a>
@@ -1318,6 +1411,8 @@
 
 
         <p>Main interface for TTL barcode generation and decoding.</p>
+<p>Constructs and owns a generator, encoder, and decoder whose parameters
+are all derived from a single BarcodeConfig so they stay in sync.</p>
 
 
 
@@ -1337,6 +1432,28 @@
 
 
 
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="ttl_barcoder.BarcodeTTL.info" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">info</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+<a href="#ttl_barcoder.BarcodeTTL.info" class="headerlink" title="Permanent link">&para;</a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Return a summary dict covering config, generator, and encoder parameters.</p>
+
+    </div>
+
+</div>
+
 
 
 
@@ -1352,6 +1469,48 @@
     <div class="doc doc-contents ">
 
         <p>Decode edge timestamps to (timestamp, barcode_value) or None.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="ttl_barcoder.BarcodeTTL.default_config" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">default_config</span><span class="p">()</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-classmethod"><code>classmethod</code></small>
+  </span>
+
+<a href="#ttl_barcoder.BarcodeTTL.default_config" class="headerlink" title="Permanent link">&para;</a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Return the default BarcodeConfig instance.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="ttl_barcoder.BarcodeTTL.get_multiple_sequences" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">get_multiple_sequences</span><span class="p">(</span><span class="n">count</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">interval_s</span><span class="o">=</span><span class="mf">5.0</span><span class="p">,</span> <span class="n">start_timestamp</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+
+<a href="#ttl_barcoder.BarcodeTTL.get_multiple_sequences" class="headerlink" title="Permanent link">&para;</a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Return timing sequences for multiple barcodes spaced interval_s apart.</p>
+<p>For timestamp TTL the barcodes encode evenly spaced future times;
+for random TTL each barcode is independently random.</p>
 
 
     </div>
@@ -1638,6 +1797,8 @@
 
 
         <p>Decode edge timestamps back to barcode values.</p>
+<p>Must be constructed with parameters that match the encoder that produced
+the signal. Use BarcodeConfig to keep encoder and decoder in sync.</p>
 
 
 
@@ -1867,7 +2028,7 @@
 
     <div class="doc doc-contents ">
 
-        <p>Generate a sequence of barcodes at fixed time intervals.</p>
+        <p>Generate count barcodes spaced interval_s seconds apart.</p>
 
 
     </div>
@@ -1885,7 +2046,9 @@
 
     <div class="doc doc-contents ">
 
-        <p>Recover timestamp from barcode value, resolving wraparound.</p>
+        <p>Recover Unix timestamp from a barcode value, resolving modular wraparound.</p>
+<p>Checks the previous, current, and next bit-width windows relative to
+reference_time and returns the candidate closest to the reference.</p>
 
 
     </div>
