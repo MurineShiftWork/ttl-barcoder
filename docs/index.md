@@ -10,8 +10,8 @@ transmittable over any digital output.
 ## Key features
 
 - Timestamp barcodes: encode Unix time at second, millisecond, or microsecond precision
-- Random barcodes: 16–64 bit random values from a seeded numpy RNG
-- Hardware-agnostic core: timing sequences are plain Python lists — no hardware dependency
+- Random barcodes: 16-64 bit random values from a seeded numpy RNG
+- Hardware-agnostic core: timing sequences are plain Python lists: no hardware dependency
 - Bpod integration: inject barcode states directly into a pybpodapi `StateMachine`
 - Raspberry Pi GPIO: send sequences over any GPIO pin via `pigpio`
 - Decoder: recover barcode value from edge timestamps with configurable tolerance
@@ -22,7 +22,7 @@ transmittable over any digital output.
 ```python
 from ttl_barcoder.core import BarcodeTTL, BarcodeConfig, TTLType
 
-# Timestamp barcode (default) — encodes current time at ms precision
+# Timestamp barcode (default): encodes current time at ms precision
 barcoder = BarcodeTTL()
 barcoder.prepare()                            # generates value + timing sequence
 sequence = barcoder.get_sequence()            # [(level: bool, duration_ms: float), ...]

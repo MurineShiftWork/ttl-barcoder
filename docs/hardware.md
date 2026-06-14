@@ -33,7 +33,7 @@ inject_barcode_states(
 ### State naming
 
 `inject_barcode_states` adds one state per barcode bit plus preamble and
-trailer states. The `first_state_name` is the entry point — set this as the
+trailer states. The `first_state_name` is the entry point: set this as the
 `state_change_conditions` target from your preceding state. The sequence
 chains internally and exits to `last_state_name` when complete.
 
@@ -48,7 +48,7 @@ Pass any BNC output channel supported by your Bpod model, e.g. `"BNC1"` or
 
 !!! note "lgpio migration planned"
     The current implementation uses `pigpio`. Support for `lgpio` (compatible
-    with Raspberry Pi 5 and newer kernels) is planned — see the
+    with Raspberry Pi 5 and newer kernels) is planned: see the
     [GitHub issue tracker](https://github.com/murineshiftwork/ttl-barcoder/issues).
 
 ### Installation
@@ -74,7 +74,7 @@ barcoder.prepare()
 send_barcode_sequence(barcoder.get_sequence(), pin=18)
 ```
 
-`pin` is the BCM GPIO pin number. The function is blocking — it returns after
+`pin` is the BCM GPIO pin number. The function is blocking: it returns after
 the full sequence has been transmitted.
 
 ### Timing accuracy
@@ -98,5 +98,5 @@ for level, duration_ms in sequence:
     time.sleep(duration_ms / 1000.0)
 ```
 
-The sequence is hardware-agnostic — any output that can switch a digital line
+The sequence is hardware-agnostic: any output that can switch a digital line
 and hold it for a specified duration can transmit a barcode.

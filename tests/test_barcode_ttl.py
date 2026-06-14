@@ -1,4 +1,4 @@
-"""Tests for BarcodeTTL — the main public interface."""
+"""Tests for BarcodeTTL: the main public interface."""
 
 from __future__ import annotations
 
