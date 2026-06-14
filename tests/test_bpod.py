@@ -1,4 +1,4 @@
-"""Tests for Bpod barcode injection — no pybpod installation required."""
+"""Tests for Bpod barcode injection: no pybpod installation required."""
 
 from __future__ import annotations
 

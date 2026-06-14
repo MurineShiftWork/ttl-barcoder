@@ -1,4 +1,4 @@
-"""Tests for TimingEncoder — sequence structure and timing."""
+"""Tests for TimingEncoder: sequence structure and timing."""
 
 from __future__ import annotations
 

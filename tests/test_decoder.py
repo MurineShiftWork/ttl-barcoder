@@ -1,4 +1,4 @@
-"""Tests for BarcodeDecoder — roundtrip and edge-case handling."""
+"""Tests for BarcodeDecoder: roundtrip and edge-case handling."""
 
 from __future__ import annotations
 
