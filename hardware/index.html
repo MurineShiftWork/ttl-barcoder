@@ -751,7 +751,7 @@ state chains to whatever state you specify as <code>last_state_name</code>.</p>
 </code></pre></div>
 <h3 id="state-naming">State naming<a class="headerlink" href="#state-naming" title="Permanent link">&para;</a></h3>
 <p><code>inject_barcode_states</code> adds one state per barcode bit plus preamble and
-trailer states. The <code>first_state_name</code> is the entry point — set this as the
+trailer states. The <code>first_state_name</code> is the entry point: set this as the
 <code>state_change_conditions</code> target from your preceding state. The sequence
 chains internally and exits to <code>last_state_name</code> when complete.</p>
 <h3 id="channel">Channel<a class="headerlink" href="#channel" title="Permanent link">&para;</a></h3>
@@ -762,7 +762,7 @@ chains internally and exits to <code>last_state_name</code> when complete.</p>
 <div class="admonition note">
 <p class="admonition-title">lgpio migration planned</p>
 <p>The current implementation uses <code>pigpio</code>. Support for <code>lgpio</code> (compatible
-with Raspberry Pi 5 and newer kernels) is planned — see the
+with Raspberry Pi 5 and newer kernels) is planned: see the
 <a href="https://github.com/murineshiftwork/ttl-barcoder/issues">GitHub issue tracker</a>.</p>
 </div>
 <h3 id="installation_1">Installation<a class="headerlink" href="#installation_1" title="Permanent link">&para;</a></h3>
@@ -779,7 +779,7 @@ with Raspberry Pi 5 and newer kernels) is planned — see the
 <a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="n">barcoder</span><span class="o">.</span><span class="n">prepare</span><span class="p">()</span>
 <a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="n">send_barcode_sequence</span><span class="p">(</span><span class="n">barcoder</span><span class="o">.</span><span class="n">get_sequence</span><span class="p">(),</span> <span class="n">pin</span><span class="o">=</span><span class="mi">18</span><span class="p">)</span>
 </code></pre></div>
-<p><code>pin</code> is the BCM GPIO pin number. The function is blocking — it returns after
+<p><code>pin</code> is the BCM GPIO pin number. The function is blocking: it returns after
 the full sequence has been transmitted.</p>
 <h3 id="timing-accuracy">Timing accuracy<a class="headerlink" href="#timing-accuracy" title="Permanent link">&para;</a></h3>
 <p><code>pigpio</code> provides hardware-timed waveforms with ~1 µs jitter, well within the
@@ -795,7 +795,7 @@ priority (<code>sudo pigpiod -t 0</code>) on loaded systems.</p>
 <a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>    <span class="n">your_output</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">level</span><span class="p">)</span>
 <a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">duration_ms</span> <span class="o">/</span> <span class="mf">1000.0</span><span class="p">)</span>
 </code></pre></div>
-<p>The sequence is hardware-agnostic — any output that can switch a digital line
+<p>The sequence is hardware-agnostic: any output that can switch a digital line
 and hold it for a specified duration can transmit a barcode.</p>
 
 
