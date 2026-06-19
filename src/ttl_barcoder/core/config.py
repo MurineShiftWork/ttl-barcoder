@@ -1,19 +1,19 @@
 from __future__ import annotations
 
-from enum import Enum
+from enum import StrEnum
 from typing import Any
 
 from pydantic import BaseModel, ConfigDict, Field
 
 
-class TTLType(str, Enum):
+class TTLType(StrEnum):
     """Type of barcode value to generate."""
 
     timestamp = "timestamp"
     random = "random"
 
 
-class TimestampPrecision(str, Enum):
+class TimestampPrecision(StrEnum):
     """Timestamp quantization precision."""
 
     seconds = "s"
