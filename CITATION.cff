@@ -4,7 +4,7 @@ type: software
 title: "ttl-barcoder: TTL barcode generation for multi-system DAQ synchronization"
 version: "0.4.0"
 repository-code: https://github.com/murineshiftwork/ttl-barcoder
-license: BSD-3-Clause
+license: LicenseRef-MSW-NonCommercial
 authors:
   - family-names: Rollik
     given-names: Lars B.
