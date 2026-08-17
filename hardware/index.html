@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
     
     
       
@@ -31,7 +31,7 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.ec1eaa64.min.css">
       
         
         <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
@@ -463,15 +463,43 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#raspberry-pi-gpio-pigpio" class="md-nav__link">
+  <a href="#raspberry-pi-gpio-lgpio-pigpio" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Raspberry Pi GPIO (pigpio)
+        Raspberry Pi GPIO (lgpio / pigpio)
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Raspberry Pi GPIO (pigpio)">
+    <nav class="md-nav" aria-label="Raspberry Pi GPIO (lgpio / pigpio)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#lgpio-recommended" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        lgpio (recommended)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#raspberry-pi-gpio-pigpio-legacy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Raspberry Pi GPIO (pigpio, legacy)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Raspberry Pi GPIO (pigpio, legacy)">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -646,15 +674,43 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#raspberry-pi-gpio-pigpio" class="md-nav__link">
+  <a href="#raspberry-pi-gpio-lgpio-pigpio" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Raspberry Pi GPIO (pigpio)
+        Raspberry Pi GPIO (lgpio / pigpio)
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Raspberry Pi GPIO (pigpio)">
+    <nav class="md-nav" aria-label="Raspberry Pi GPIO (lgpio / pigpio)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#lgpio-recommended" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        lgpio (recommended)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#raspberry-pi-gpio-pigpio-legacy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Raspberry Pi GPIO (pigpio, legacy)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Raspberry Pi GPIO (pigpio, legacy)">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -744,9 +800,9 @@ state chains to whatever state you specify as <code>last_state_name</code>.</p>
 <a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="n">inject_barcode_states</span><span class="p">(</span>
 <a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>    <span class="n">sma</span><span class="p">,</span>                            <span class="c1"># pybpodapi StateMachine</span>
 <a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>    <span class="n">barcoder</span><span class="o">.</span><span class="n">get_sequence</span><span class="p">(),</span>
-<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>    <span class="n">bnc_channel</span><span class="o">=</span><span class="s2">&quot;BNC1&quot;</span><span class="p">,</span>             <span class="c1"># Bpod BNC output channel</span>
-<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>    <span class="n">first_state_name</span><span class="o">=</span><span class="s2">&quot;barcode_start&quot;</span><span class="p">,</span>
-<a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>    <span class="n">last_state_name</span><span class="o">=</span><span class="s2">&quot;next_trial&quot;</span><span class="p">,</span>   <span class="c1"># state to enter after barcode finishes</span>
+<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>    <span class="n">bnc_channel</span><span class="o">=</span><span class="s2">"BNC1"</span><span class="p">,</span>             <span class="c1"># Bpod BNC output channel</span>
+<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>    <span class="n">first_state_name</span><span class="o">=</span><span class="s2">"barcode_start"</span><span class="p">,</span>
+<a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>    <span class="n">last_state_name</span><span class="o">=</span><span class="s2">"next_trial"</span><span class="p">,</span>   <span class="c1"># state to enter after barcode finishes</span>
 <a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="p">)</span>
 </code></pre></div>
 <h3 id="state-naming">State naming<a class="headerlink" href="#state-naming" title="Permanent link">&para;</a></h3>
@@ -758,26 +814,46 @@ chains internally and exits to <code>last_state_name</code> when complete.</p>
 <p>Pass any BNC output channel supported by your Bpod model, e.g. <code>"BNC1"</code> or
 <code>"BNC2"</code>. The same channel must be wired to the recording system input.</p>
 <hr />
-<h2 id="raspberry-pi-gpio-pigpio">Raspberry Pi GPIO (pigpio)<a class="headerlink" href="#raspberry-pi-gpio-pigpio" title="Permanent link">&para;</a></h2>
-<div class="admonition note">
-<p class="admonition-title">lgpio migration planned</p>
-<p>The current implementation uses <code>pigpio</code>. Support for <code>lgpio</code> (compatible
-with Raspberry Pi 5 and newer kernels) is planned: see the
-<a href="https://github.com/murineshiftwork/ttl-barcoder/issues">GitHub issue tracker</a>.</p>
-</div>
+<h2 id="raspberry-pi-gpio-lgpio-pigpio">Raspberry Pi GPIO (lgpio / pigpio)<a class="headerlink" href="#raspberry-pi-gpio-lgpio-pigpio" title="Permanent link">&para;</a></h2>
+<p>Two backends are available with identical interfaces
+(<code>BarcodeSender</code> / <code>Connection</code> / <code>send_barcode_sequence</code>):</p>
+<ul>
+<li><strong><code>lgpio</code></strong> (recommended) — chardev-based, pip-installable, <strong>no daemon</strong>, and
+  compatible with the Raspberry Pi 5 (RP1) as well as the Pi 4. Use this on new setups.</li>
+<li><strong><code>pigpio</code></strong> (legacy) — daemon-based; kept for existing Pi 3/4 rigs. <code>pigpio</code> is
+  unmaintained and does not work on the Pi 5.</li>
+</ul>
+<h3 id="lgpio-recommended">lgpio (recommended)<a class="headerlink" href="#lgpio-recommended" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>pip<span class="w"> </span>install<span class="w"> </span>ttl-barcoder<span class="o">[</span>lgpio<span class="o">]</span>
+</code></pre></div>
+<p>No daemon is required. On the <strong>Raspberry Pi 5</strong> pass <code>gpiochip=4</code> (its GPIO lives on
+<code>gpiochip4</code>); the default <code>0</code> is correct for the Pi 4.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">ttl_barcoder.core</span><span class="w"> </span><span class="kn">import</span> <span class="n">BarcodeTTL</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">ttl_barcoder.hardware.lgpio</span><span class="w"> </span><span class="kn">import</span> <span class="n">send_barcode_sequence</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="n">barcoder</span> <span class="o">=</span> <span class="n">BarcodeTTL</span><span class="p">()</span>
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="n">barcoder</span><span class="o">.</span><span class="n">prepare</span><span class="p">()</span>
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="n">send_barcode_sequence</span><span class="p">(</span><span class="n">barcoder</span><span class="o">.</span><span class="n">get_sequence</span><span class="p">(),</span> <span class="n">pin</span><span class="o">=</span><span class="mi">18</span><span class="p">)</span>              <span class="c1"># Pi 4</span>
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="n">send_barcode_sequence</span><span class="p">(</span><span class="n">barcoder</span><span class="o">.</span><span class="n">get_sequence</span><span class="p">(),</span> <span class="n">pin</span><span class="o">=</span><span class="mi">18</span><span class="p">,</span> <span class="n">gpiochip</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>  <span class="c1"># Pi 5</span>
+</code></pre></div>
+<p>The function is blocking: it returns after the full sequence has been transmitted and
+leaves the pin low. It drives the line directly and holds each segment with a monotonic
+busy-wait, accurate to well under the default 25 % tolerance for the millisecond-scale
+barcode segments.</p>
+<h2 id="raspberry-pi-gpio-pigpio-legacy">Raspberry Pi GPIO (pigpio, legacy)<a class="headerlink" href="#raspberry-pi-gpio-pigpio-legacy" title="Permanent link">&para;</a></h2>
 <h3 id="installation_1">Installation<a class="headerlink" href="#installation_1" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>pip<span class="w"> </span>install<span class="w"> </span>ttl-barcoder<span class="o">[</span>pigpio<span class="o">]</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>pip<span class="w"> </span>install<span class="w"> </span>ttl-barcoder<span class="o">[</span>pigpio<span class="o">]</span>
 </code></pre></div>
 <p><code>pigpio</code> requires the pigpio daemon to be running on the Pi:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>sudo<span class="w"> </span>pigpiod
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>sudo<span class="w"> </span>pigpiod
 </code></pre></div>
 <h3 id="usage_1">Usage<a class="headerlink" href="#usage_1" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">ttl_barcoder.core</span><span class="w"> </span><span class="kn">import</span> <span class="n">BarcodeTTL</span>
-<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">ttl_barcoder.hardware.pigpio</span><span class="w"> </span><span class="kn">import</span> <span class="n">send_barcode_sequence</span>
-<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>
-<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="n">barcoder</span> <span class="o">=</span> <span class="n">BarcodeTTL</span><span class="p">()</span>
-<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="n">barcoder</span><span class="o">.</span><span class="n">prepare</span><span class="p">()</span>
-<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="n">send_barcode_sequence</span><span class="p">(</span><span class="n">barcoder</span><span class="o">.</span><span class="n">get_sequence</span><span class="p">(),</span> <span class="n">pin</span><span class="o">=</span><span class="mi">18</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">ttl_barcoder.core</span><span class="w"> </span><span class="kn">import</span> <span class="n">BarcodeTTL</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">ttl_barcoder.hardware.pigpio</span><span class="w"> </span><span class="kn">import</span> <span class="n">send_barcode_sequence</span>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="n">barcoder</span> <span class="o">=</span> <span class="n">BarcodeTTL</span><span class="p">()</span>
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="n">barcoder</span><span class="o">.</span><span class="n">prepare</span><span class="p">()</span>
+<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="n">send_barcode_sequence</span><span class="p">(</span><span class="n">barcoder</span><span class="o">.</span><span class="n">get_sequence</span><span class="p">(),</span> <span class="n">pin</span><span class="o">=</span><span class="mi">18</span><span class="p">)</span>
 </code></pre></div>
 <p><code>pin</code> is the BCM GPIO pin number. The function is blocking: it returns after
 the full sequence has been transmitted.</p>
@@ -788,12 +864,12 @@ priority (<code>sudo pigpiod -t 0</code>) on loaded systems.</p>
 <hr />
 <h2 id="custom-hardware">Custom hardware<a class="headerlink" href="#custom-hardware" title="Permanent link">&para;</a></h2>
 <p>For any hardware not listed above, consume the timing sequence directly:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="n">sequence</span> <span class="o">=</span> <span class="n">barcoder</span><span class="o">.</span><span class="n">get_sequence</span><span class="p">()</span>
-<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="c1"># sequence: list of (level: bool, duration_ms: float)</span>
-<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>
-<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="k">for</span> <span class="n">level</span><span class="p">,</span> <span class="n">duration_ms</span> <span class="ow">in</span> <span class="n">sequence</span><span class="p">:</span>
-<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>    <span class="n">your_output</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">level</span><span class="p">)</span>
-<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">duration_ms</span> <span class="o">/</span> <span class="mf">1000.0</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="n">sequence</span> <span class="o">=</span> <span class="n">barcoder</span><span class="o">.</span><span class="n">get_sequence</span><span class="p">()</span>
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="c1"># sequence: list of (level: bool, duration_ms: float)</span>
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="k">for</span> <span class="n">level</span><span class="p">,</span> <span class="n">duration_ms</span> <span class="ow">in</span> <span class="n">sequence</span><span class="p">:</span>
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>    <span class="n">your_output</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">level</span><span class="p">)</span>
+<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">duration_ms</span> <span class="o">/</span> <span class="mf">1000.0</span><span class="p">)</span>
 </code></pre></div>
 <p>The sequence is hardware-agnostic: any output that can switch a digital line
 and hold it for a specified duration can transmit a barcode.</p>
@@ -855,7 +931,7 @@ and hold it for a specified duration can transmit a barcode.</p>
       <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.sections", "navigation.top", "content.code.copy"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../assets/javascripts/bundle.d7400e89.min.js"></script>
       
     
   </body>
