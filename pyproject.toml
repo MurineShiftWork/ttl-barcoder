@@ -37,6 +37,7 @@ dependencies = [
 [project.optional-dependencies]
 bpod = ["pybpod-api"]
 pigpio = ["pigpio>=1.78"]
+lgpio = ["lgpio"]
 dev = [
     "pytest",
     "pytest-cov",
@@ -121,5 +122,5 @@ warn_return_any = false
 ignore_missing_imports = true
 
 [[tool.mypy.overrides]]
-module = ["pigpio.*", "pybpodapi.*", "pybpod.*"]
+module = ["pigpio.*", "lgpio.*", "pybpodapi.*", "pybpod.*"]
 ignore_missing_imports = true

@@ -44,12 +44,41 @@ Pass any BNC output channel supported by your Bpod model, e.g. `"BNC1"` or
 
 ---
 
-## Raspberry Pi GPIO (pigpio)
+## Raspberry Pi GPIO (lgpio / pigpio)
 
-!!! note "lgpio migration planned"
-    The current implementation uses `pigpio`. Support for `lgpio` (compatible
-    with Raspberry Pi 5 and newer kernels) is planned: see the
-    [GitHub issue tracker](https://github.com/murineshiftwork/ttl-barcoder/issues).
+Two backends are available with identical interfaces
+(`BarcodeSender` / `Connection` / `send_barcode_sequence`):
+
+- **`lgpio`** (recommended) — chardev-based, pip-installable, **no daemon**, and
+  compatible with the Raspberry Pi 5 (RP1) as well as the Pi 4. Use this on new setups.
+- **`pigpio`** (legacy) — daemon-based; kept for existing Pi 3/4 rigs. `pigpio` is
+  unmaintained and does not work on the Pi 5.
+
+### lgpio (recommended)
+
+```bash
+pip install ttl-barcoder[lgpio]
+```
+
+No daemon is required. On the **Raspberry Pi 5** pass `gpiochip=4` (its GPIO lives on
+`gpiochip4`); the default `0` is correct for the Pi 4.
+
+```python
+from ttl_barcoder.core import BarcodeTTL
+from ttl_barcoder.hardware.lgpio import send_barcode_sequence
+
+barcoder = BarcodeTTL()
+barcoder.prepare()
+send_barcode_sequence(barcoder.get_sequence(), pin=18)              # Pi 4
+send_barcode_sequence(barcoder.get_sequence(), pin=18, gpiochip=4)  # Pi 5
+```
+
+The function is blocking: it returns after the full sequence has been transmitted and
+leaves the pin low. It drives the line directly and holds each segment with a monotonic
+busy-wait, accurate to well under the default 25 % tolerance for the millisecond-scale
+barcode segments.
+
+## Raspberry Pi GPIO (pigpio, legacy)
 
 ### Installation
 
