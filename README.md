@@ -126,4 +126,4 @@ ttl_barcoder/
 
 ## License & sources
 
-This software is released under the **[BSD 3-Clause License](LICENSE)**.
+This software is released under the **[BSD-3-Clause-NonCommercial licence](LICENSE)**: non-commercial research, academic and educational use only.
