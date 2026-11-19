@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from ttl_barcoder.core.config import BarcodeConfig, TTLType
-from ttl_barcoder.core.decoder import BarcodeDecoder
+from ttl_barcoder.core.decoder import BarcodeDecoder, FoundBarcode
 from ttl_barcoder.core.encoder import TimingEncoder
 from ttl_barcoder.core.generator import (
     TimestampGenerator,
@@ -84,6 +84,38 @@ class BarcodeTTL:
         """Decode edge timestamps to (timestamp, barcode_value) or None."""
         return self.decoder.decode_edges(
             edge_timestamps=edge_timestamps, edge_levels=edge_levels
+        )
+
+    def find_barcodes(
+        self,
+        edge_timestamps: list[float],
+        edge_levels: list[bool],
+        *,
+        min_pulse_s: float = 0.0,
+        sample_interval_s: float = 0.0,
+    ) -> list[FoundBarcode]:
+        """Start, end and value of every barcode in an edge stream."""
+        return self.decoder.find_barcodes(
+            edge_timestamps,
+            edge_levels,
+            min_pulse_s=min_pulse_s,
+            sample_interval_s=sample_interval_s,
+        )
+
+    def decode_stream(
+        self,
+        edge_timestamps: list[float],
+        edge_levels: list[bool],
+        *,
+        min_pulse_s: float = 0.0,
+        sample_interval_s: float = 0.0,
+    ) -> list[tuple[float, int]]:
+        """Every barcode in an edge stream, found by the configured lengths."""
+        return self.decoder.decode_stream(
+            edge_timestamps,
+            edge_levels,
+            min_pulse_s=min_pulse_s,
+            sample_interval_s=sample_interval_s,
         )
 
     def recover_timestamp(

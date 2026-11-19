@@ -5,7 +5,7 @@ from ttl_barcoder.core.config import (
     TTLType,
     get_preset,
 )
-from ttl_barcoder.core.decoder import BarcodeDecoder
+from ttl_barcoder.core.decoder import BarcodeDecoder, FoundBarcode, drop_short_pulses
 from ttl_barcoder.core.encoder import TimingEncoder
 from ttl_barcoder.core.generator import (
     RandomGenerator,
@@ -25,5 +25,7 @@ __all__ = [
     "create_generator",
     "TimingEncoder",
     "BarcodeDecoder",
+    "FoundBarcode",
+    "drop_short_pulses",
     "BarcodeTTL",
 ]
