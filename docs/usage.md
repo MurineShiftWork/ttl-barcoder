@@ -164,6 +164,40 @@ or a timing mismatch between the config used for encoding and decoding.
 
 ---
 
+## Decoding a whole recording
+
+A recorded line usually holds many barcodes and other pulses. `find_barcodes`
+takes the whole edge stream and locates each barcode by the configured lengths,
+so the config must be the one the sender used:
+
+```python
+barcoder = BarcodeTTL(config)  # same init, bit and bit count as the sender
+for b in barcoder.find_barcodes(edge_timestamps, edge_levels):
+    print(b.start_s, b.end_s, b.value)
+```
+
+How it works:
+
+- Every rising edge is a candidate start. The level is read at the middle of each
+  segment from there: init HIGH-LOW-HIGH, the bits, end LOW-HIGH-LOW. A candidate
+  whose init or end levels do not match is skipped.
+- A found barcode spans `config.total_duration_ms`; the search resumes after it.
+  Edges outside every `[start_s, end_s]` are other signals (trial pulses, ticks).
+- No silence threshold is involved. Splitting a stream at gaps fails for slow
+  barcodes: with 100 ms bits, a run of equal bits is a long silence inside a
+  barcode.
+- Edges at one timestamp with both levels (a zero-length pulse, as digital inputs
+  sharing a port report when another line changes) are dropped first.
+  `min_pulse_s` drops wider glitches too.
+- `sample_interval_s` is the source's sampling interval, e.g. `1 / fps` for a
+  camera line. If the init pulses are shorter than two samples they cannot be
+  seen, so framing is not checked and a barcode starts at the first high sample
+  after the previous barcode. Bits should then span at least a few samples.
+
+`decode_stream` returns the same as `(start_s, value)` pairs.
+
+---
+
 ## Recovering wall time from a decoded value
 
 For `TTLType.timestamp` barcodes, convert the raw integer back to a Unix
