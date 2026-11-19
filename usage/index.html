@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.2">
     
     
       
@@ -31,10 +31,10 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.ec1eaa64.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.57a0d79d.min.css">
       
         
-        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../assets/stylesheets/palette.fb2fffe2.min.css">
       
       
 
@@ -420,6 +420,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#decoding-a-whole-recording" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Decoding a whole recording
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#recovering-wall-time-from-a-decoded-value" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -640,6 +651,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#decoding-a-whole-recording" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Decoding a whole recording
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#recovering-wall-time-from-a-decoded-value" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -817,15 +839,47 @@ milliseconds) and edges must alternate between rising and falling:</p>
 are fewer than 6 edges. The most common causes are a truncated recording window
 or a timing mismatch between the config used for encoding and decoding.</p>
 <hr />
+<h2 id="decoding-a-whole-recording">Decoding a whole recording<a class="headerlink" href="#decoding-a-whole-recording" title="Permanent link">&para;</a></h2>
+<p>A recorded line usually holds many barcodes and other pulses. <code>find_barcodes</code>
+takes the whole edge stream and locates each barcode by the configured lengths,
+so the config must be the one the sender used:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="n">barcoder</span> <span class="o">=</span> <span class="n">BarcodeTTL</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>  <span class="c1"># same init, bit and bit count as the sender</span>
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">barcoder</span><span class="o">.</span><span class="n">find_barcodes</span><span class="p">(</span><span class="n">edge_timestamps</span><span class="p">,</span> <span class="n">edge_levels</span><span class="p">):</span>
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>    <span class="nb">print</span><span class="p">(</span><span class="n">b</span><span class="o">.</span><span class="n">start_s</span><span class="p">,</span> <span class="n">b</span><span class="o">.</span><span class="n">end_s</span><span class="p">,</span> <span class="n">b</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+</code></pre></div>
+<p>How it works:</p>
+<ul>
+<li>Every rising edge is a candidate start. The level is read at the middle of each
+  segment from there: init HIGH-LOW-HIGH, the bits, end LOW-HIGH-LOW. A candidate
+  whose init or end levels do not match is skipped.</li>
+<li>A found barcode spans <code>config.total_duration_ms</code>; the search resumes after it.
+  Edges outside every <code>[start_s, end_s]</code> are other signals (trial pulses, ticks).</li>
+<li>No silence threshold is involved. Splitting a stream at gaps fails for slow
+  barcodes: with 100 ms bits, a run of equal bits is a long silence inside a
+  barcode.</li>
+<li>Edges at one timestamp with both levels (a zero-length pulse, as digital inputs
+  sharing a port report when another line changes) are dropped first.
+  <code>min_pulse_s</code> drops wider glitches too.</li>
+<li><code>sample_interval_s</code> is the source's sampling interval, e.g. <code>1 / fps</code> for a
+  camera line. If the init pulses are shorter than two samples they cannot be
+  seen, so framing is not checked and a barcode starts at the first high sample
+  after the previous barcode. A sample shows an edge up to one interval late, so
+  starts are taken half an interval before the sample.</li>
+<li>On a sampled line, bits need about three samples to decode reliably. Over random
+  frame phases, 100 ms bits decode exactly at 30 to 120 fps, 50 ms bits at 60 fps
+  and above, and 35 ms bits (10 ms init) only about a quarter of the time at 60 fps.</li>
+</ul>
+<p><code>decode_stream</code> returns the same as <code>(start_s, value)</code> pairs.</p>
+<hr />
 <h2 id="recovering-wall-time-from-a-decoded-value">Recovering wall time from a decoded value<a class="headerlink" href="#recovering-wall-time-from-a-decoded-value" title="Permanent link">&para;</a></h2>
 <p>For <code>TTLType.timestamp</code> barcodes, convert the raw integer back to a Unix
 timestamp. The <code>reference_time</code> argument resolves modular wraparound; pass a
 time close to when the barcode was sent:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="n">wall_time</span> <span class="o">=</span> <span class="n">barcoder</span><span class="o">.</span><span class="n">recover_timestamp</span><span class="p">(</span>
-<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>    <span class="n">barcode_value</span><span class="o">=</span><span class="n">barcode_value</span><span class="p">,</span>
-<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>    <span class="n">reference_time</span><span class="o">=</span><span class="n">recording_start_time</span><span class="p">,</span>  <span class="c1"># any time within coverage_years/2 of transmission</span>
-<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="p">)</span>
-<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Barcode encoded time: </span><span class="si">{</span><span class="n">wall_time</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="n">wall_time</span> <span class="o">=</span> <span class="n">barcoder</span><span class="o">.</span><span class="n">recover_timestamp</span><span class="p">(</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>    <span class="n">barcode_value</span><span class="o">=</span><span class="n">barcode_value</span><span class="p">,</span>
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>    <span class="n">reference_time</span><span class="o">=</span><span class="n">recording_start_time</span><span class="p">,</span>  <span class="c1"># any time within coverage_years/2 of transmission</span>
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="p">)</span>
+<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Barcode encoded time: </span><span class="si">{</span><span class="n">wall_time</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 </code></pre></div>
 <p>If <code>reference_time</code> is omitted it defaults to <code>time.time()</code>, which is usually
 fine for online decoding but unreliable for offline analysis of old recordings.
@@ -880,13 +934,13 @@ This method raises <code>ValueError</code> for <code>TTLType.random</code> confi
 </table>
 <hr />
 <h2 id="inspecting-config-and-coverage">Inspecting config and coverage<a class="headerlink" href="#inspecting-config-and-coverage" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="n">barcoder</span> <span class="o">=</span> <span class="n">BarcodeTTL</span><span class="p">()</span>
-<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="nb">print</span><span class="p">(</span><span class="n">barcoder</span><span class="o">.</span><span class="n">config</span><span class="p">)</span>
-<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="c1"># BarcodeConfig(timestamp, 37-bit, ms precision, 4.4yr coverage, 35.0ms bits, 1355ms total)</span>
-<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>
-<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="nb">print</span><span class="p">(</span><span class="n">barcoder</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">total_duration_ms</span><span class="p">)</span>   <span class="c1"># total TTL transmission time</span>
-<a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="nb">print</span><span class="p">(</span><span class="n">barcoder</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">coverage_years</span><span class="p">)</span>      <span class="c1"># how long before timestamp wraps</span>
-<a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a><span class="nb">print</span><span class="p">(</span><span class="n">barcoder</span><span class="o">.</span><span class="n">info</span><span class="p">)</span>                       <span class="c1"># full dict with generator and encoder details</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="n">barcoder</span> <span class="o">=</span> <span class="n">BarcodeTTL</span><span class="p">()</span>
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="nb">print</span><span class="p">(</span><span class="n">barcoder</span><span class="o">.</span><span class="n">config</span><span class="p">)</span>
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="c1"># BarcodeConfig(timestamp, 37-bit, ms precision, 4.4yr coverage, 35.0ms bits, 1355ms total)</span>
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>
+<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="nb">print</span><span class="p">(</span><span class="n">barcoder</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">total_duration_ms</span><span class="p">)</span>   <span class="c1"># total TTL transmission time</span>
+<a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a><span class="nb">print</span><span class="p">(</span><span class="n">barcoder</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">coverage_years</span><span class="p">)</span>      <span class="c1"># how long before timestamp wraps</span>
+<a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a><span class="nb">print</span><span class="p">(</span><span class="n">barcoder</span><span class="o">.</span><span class="n">info</span><span class="p">)</span>                       <span class="c1"># full dict with generator and encoder details</span>
 </code></pre></div>
 
 
@@ -943,10 +997,10 @@ This method raises <code>ValueError</code> for <code>TTLType.random</code> confi
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.sections", "navigation.top", "content.code.copy"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.sections", "navigation.top", "content.code.copy"], "search": "../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../assets/javascripts/bundle.d7400e89.min.js"></script>
+      <script src="../assets/javascripts/bundle.a5f9d56c.min.js"></script>
       
     
   </body>

@@ -21,7 +21,7 @@
       
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.2">
     
     
       
@@ -29,10 +29,10 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.ec1eaa64.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.57a0d79d.min.css">
       
         
-        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../assets/stylesheets/palette.fb2fffe2.min.css">
       
       
 
@@ -472,10 +472,32 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#ttl_barcoder.BarcodeTTL.decode_stream" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        decode_stream
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#ttl_barcoder.BarcodeTTL.default_config" class="md-nav__link">
     <span class="md-ellipsis">
       
         default_config
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ttl_barcoder.BarcodeTTL.find_barcodes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        find_barcodes
       
     </span>
   </a>
@@ -660,10 +682,43 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#ttl_barcoder.BarcodeDecoder.total_duration_ms" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        total_duration_ms
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#ttl_barcoder.BarcodeDecoder.decode_edges" class="md-nav__link">
     <span class="md-ellipsis">
       
         decode_edges
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ttl_barcoder.BarcodeDecoder.decode_stream" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        decode_stream
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ttl_barcoder.BarcodeDecoder.find_barcodes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        find_barcodes
       
     </span>
   </a>
@@ -960,10 +1015,32 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#ttl_barcoder.BarcodeTTL.decode_stream" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        decode_stream
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#ttl_barcoder.BarcodeTTL.default_config" class="md-nav__link">
     <span class="md-ellipsis">
       
         default_config
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ttl_barcoder.BarcodeTTL.find_barcodes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        find_barcodes
       
     </span>
   </a>
@@ -1148,10 +1225,43 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#ttl_barcoder.BarcodeDecoder.total_duration_ms" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        total_duration_ms
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#ttl_barcoder.BarcodeDecoder.decode_edges" class="md-nav__link">
     <span class="md-ellipsis">
       
         decode_edges
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ttl_barcoder.BarcodeDecoder.decode_stream" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        decode_stream
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ttl_barcoder.BarcodeDecoder.find_barcodes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        find_barcodes
       
     </span>
   </a>
@@ -1478,6 +1588,24 @@ are all derived from a single BarcodeConfig so they stay in sync.</p>
 <div class="doc doc-object doc-function">
 
 
+<h3 id="ttl_barcoder.BarcodeTTL.decode_stream" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">decode_stream</span><span class="p">(</span><span class="n">edge_timestamps</span><span class="p">,</span> <span class="n">edge_levels</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">min_pulse_s</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">sample_interval_s</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span></code>
+
+<a href="#ttl_barcoder.BarcodeTTL.decode_stream" class="headerlink" title="Permanent link">&para;</a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Every barcode in an edge stream, found by the configured lengths.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
 <h3 id="ttl_barcoder.BarcodeTTL.default_config" class="doc doc-heading">
             <code class="highlight language-python"><span class="n">default_config</span><span class="p">()</span></code>
 
@@ -1491,6 +1619,24 @@ are all derived from a single BarcodeConfig so they stay in sync.</p>
     <div class="doc doc-contents ">
 
         <p>Return the default BarcodeConfig instance.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="ttl_barcoder.BarcodeTTL.find_barcodes" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">find_barcodes</span><span class="p">(</span><span class="n">edge_timestamps</span><span class="p">,</span> <span class="n">edge_levels</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">min_pulse_s</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">sample_interval_s</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span></code>
+
+<a href="#ttl_barcoder.BarcodeTTL.find_barcodes" class="headerlink" title="Permanent link">&para;</a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Start, end and value of every barcode in an edge stream.</p>
 
 
     </div>
@@ -1818,6 +1964,28 @@ the signal. Use BarcodeConfig to keep encoder and decoder in sync.</p>
 
 
 
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="ttl_barcoder.BarcodeDecoder.total_duration_ms" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">total_duration_ms</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+<a href="#ttl_barcoder.BarcodeDecoder.total_duration_ms" class="headerlink" title="Permanent link">&para;</a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Duration of one barcode: init and end framing plus all bits.</p>
+
+    </div>
+
+</div>
+
 
 
 
@@ -1833,6 +2001,176 @@ the signal. Use BarcodeConfig to keep encoder and decoder in sync.</p>
     <div class="doc doc-contents ">
 
         <p>Decode edge timestamps to (timestamp, barcode_value) or None on failure.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="ttl_barcoder.BarcodeDecoder.decode_stream" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">decode_stream</span><span class="p">(</span><span class="n">edge_timestamps</span><span class="p">,</span> <span class="n">edge_levels</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">min_pulse_s</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">sample_interval_s</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span></code>
+
+<a href="#ttl_barcoder.BarcodeDecoder.decode_stream" class="headerlink" title="Permanent link">&para;</a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p><code>(start_s, value)</code> of every barcode in an edge stream.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="ttl_barcoder.BarcodeDecoder.find_barcodes" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">find_barcodes</span><span class="p">(</span><span class="n">edge_timestamps</span><span class="p">,</span> <span class="n">edge_levels</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">min_pulse_s</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">sample_interval_s</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span></code>
+
+<a href="#ttl_barcoder.BarcodeDecoder.find_barcodes" class="headerlink" title="Permanent link">&para;</a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Locate and decode every barcode in a continuous edge stream.</p>
+<p>A barcode is located by its configured lengths, not by silences around it:
+each rising edge is a candidate start, and the line level is read at the
+middle of every init, bit and end segment from there. A decoded barcode
+covers <code>total_duration_ms</code>; the search resumes after it.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <code>edge_timestamps</code>
+            </td>
+            <td>
+                  <code><span title="collections.abc.Sequence">Sequence</span>[<span title="float">float</span>]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Edge times in seconds, ascending.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>edge_levels</code>
+            </td>
+            <td>
+                  <code><span title="collections.abc.Sequence">Sequence</span>[<span title="bool">bool</span>]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Level after each edge.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>min_pulse_s</code>
+            </td>
+            <td>
+                  <code><span title="float">float</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Pulses up to this width are dropped first (see
+<code>drop_short_pulses</code>); zero-length pulses are always dropped.</p>
+              </div>
+            </td>
+            <td>
+                  <code>0.0</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>sample_interval_s</code>
+            </td>
+            <td>
+                  <code><span title="float">float</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Sampling interval of the source, e.g. the frame
+interval of a camera line. When the init pulses are shorter than two
+samples they cannot be seen reliably: framing is not checked, and a
+barcode starts at the first high sample after the previous one. A
+sampled edge happened up to one interval before the sample that shows
+it, so each start is taken half an interval earlier. Bits shorter
+than about three samples do not decode reliably (at 60 fps, 35 ms bits
+decode exactly for about a quarter of frame phases, 50 ms bits always).</p>
+              </div>
+            </td>
+            <td>
+                  <code>0.0</code>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="list">list</span>[<span title="ttl_barcoder.core.decoder.FoundBarcode">FoundBarcode</span>]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>One <code>FoundBarcode</code> (start, end, value) per barcode, in time order. Edges</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="list">list</span>[<span title="ttl_barcoder.core.decoder.FoundBarcode">FoundBarcode</span>]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>outside every <code>[start_s, end_s]</code> are not part of a barcode (trial pulses,</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="list">list</span>[<span title="ttl_barcoder.core.decoder.FoundBarcode">FoundBarcode</span>]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>other signals).</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
 
 
     </div>
@@ -2319,10 +2657,10 @@ reference_time and returns the candidate closest to the reference.</p>
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.sections", "navigation.top", "content.code.copy"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.sections", "navigation.top", "content.code.copy"], "search": "../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../assets/javascripts/bundle.d7400e89.min.js"></script>
+      <script src="../assets/javascripts/bundle.a5f9d56c.min.js"></script>
       
     
   </body>
