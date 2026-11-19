@@ -92,7 +92,8 @@ def test_frame_rate_line_starts_at_the_first_high_frame():
     edge_l = [s for i, s in enumerate(sampled) if i and s != sampled[i - 1]]
     (found,) = ttl.find_barcodes(edge_t, edge_l, sample_interval_s=1 / fps)
     assert found.value == 2**35 + 77
-    assert abs(found.start_s - 3.0) <= 1 / fps
+    # half an interval before the first high frame: within half a frame of the edge
+    assert abs(found.start_s - 3.0) <= 0.5 / fps
 
 
 def test_short_init_skips_framing_at_frame_rate():
@@ -103,4 +104,6 @@ def test_short_init_skips_framing_at_frame_rate():
     edge_t = [1.0, *[t for t, _ in data]]
     edge_l = [True, *[lv for _, lv in data]]
     assert ttl.decode_stream(edge_t, edge_l) == []  # framing check fails
-    assert ttl.decode_stream(edge_t, edge_l, sample_interval_s=1 / 60) == [(1.0, 4242)]
+    ((start, value),) = ttl.decode_stream(edge_t, edge_l, sample_interval_s=1 / 60)
+    assert value == 4242
+    assert start == pytest.approx(1.0 - 0.5 / 60)

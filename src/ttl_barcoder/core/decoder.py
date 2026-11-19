@@ -165,7 +165,11 @@ class BarcodeDecoder:
             sample_interval_s: Sampling interval of the source, e.g. the frame
                 interval of a camera line. When the init pulses are shorter than two
                 samples they cannot be seen reliably: framing is not checked, and a
-                barcode starts at the first high sample after the previous one.
+                barcode starts at the first high sample after the previous one. A
+                sampled edge happened up to one interval before the sample that shows
+                it, so each start is taken half an interval earlier. Bits shorter
+                than about three samples do not decode reliably (at 60 fps, 35 ms bits
+                decode exactly for about a quarter of frame phases, 50 ms bits always).
 
         Returns:
             One ``FoundBarcode`` (start, end, value) per barcode, in time order. Edges
@@ -194,7 +198,8 @@ class BarcodeDecoder:
         total = self.total_duration_ms / 1000.0
         results: list[FoundBarcode] = []
         free_from = -np.inf
-        for start in t[lv]:
+        for seen in t[lv]:
+            start = seen - sample_interval_s / 2
             if start < free_from:
                 continue
             if check_framing and (

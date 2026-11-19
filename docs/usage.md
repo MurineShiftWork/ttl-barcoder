@@ -192,7 +192,11 @@ How it works:
 - `sample_interval_s` is the source's sampling interval, e.g. `1 / fps` for a
   camera line. If the init pulses are shorter than two samples they cannot be
   seen, so framing is not checked and a barcode starts at the first high sample
-  after the previous barcode. Bits should then span at least a few samples.
+  after the previous barcode. A sample shows an edge up to one interval late, so
+  starts are taken half an interval before the sample.
+- On a sampled line, bits need about three samples to decode reliably. Over random
+  frame phases, 100 ms bits decode exactly at 30 to 120 fps, 50 ms bits at 60 fps
+  and above, and 35 ms bits (10 ms init) only about a quarter of the time at 60 fps.
 
 `decode_stream` returns the same as `(start_s, value)` pairs.
 
